@@ -152,87 +152,10 @@
 
         .form-input:focus + .form-label {
             color: var(--primary-color);
-        }
-
-        .radio-group {
+        }        .radio-group {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-        }
-
-        .radio-option {
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: #ffffff;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .radio-option:hover {
-            border-color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.02);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .radio-option.selected {
-            border-color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.05);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .radio-input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .radio-checkmark {
-            height: 20px;
-            width: 20px;
-            background-color: #ffffff;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            margin-right: 0.75rem;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .radio-option:hover .radio-checkmark {
-            border-color: var(--primary-color);
-        }
-
-        .radio-option.selected .radio-checkmark {
-            border-color: var(--primary-color);
-            background-color: var(--primary-color);
-        }
-
-        .radio-checkmark::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: white;
-            transition: transform 0.2s ease;
-        }
-
-        .radio-option.selected .radio-checkmark::after {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .radio-text {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-primary);
         }
 
         .submit-btn {
@@ -528,40 +451,41 @@
             <div class="form-header">
                 <h1 class="form-title">Alumni Registration</h1>
                 <p class="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
-            </div>
-
-            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOM2rqfU3xIIWNMjKXcnT2_M-B6WGF_MD_KVrNlTlk7WZrKg/formResponse"
+            </div>            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOM2rqfU3xIIWNMjKXcnT2_M-B6WGF_MD_KVrNlTlk7WZrKg/formResponse"
                   target="_self"
                   id="bootstrapForm"
                   method="POST">
-                
-                <fieldset>
-                    <h2>test<br><small>Sample Page</small></h2>
-                </fieldset>
 
-                <!-- Field type: "short" id: "1143558305" -->
-                <fieldset>
-                    <legend for="1143558305">Name</legend>
-                    <div class="form-group">
-                        <input id="2132433900" type="text" name="entry.2132433900" class="form-control">
-                    </div>
-                </fieldset>
-
-                <!-- Field type: "short" id: "291257922" -->
-                <fieldset>
-                    <legend for="291257922">Email</legend>
-                    <div class="form-group">
-                        <input id="333217225" type="text" name="entry.333217225" class="form-control">
-                    </div>
-                </fieldset>
-
-                <!-- Field type: "short" id: "1759743191" -->
-                <fieldset>
-                    <legend for="1759743191">Address</legend>
-                    <div class="form-group">
-                        <input id="117259822" type="text" name="entry.117259822" class="form-control">
-                    </div>
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="2132433900" class="form-label">Full Name *</label>
+                    <input id="nameInput" 
+                           type="text" 
+                           name="entry.2132433900" 
+                           class="form-input"
+                           placeholder="Enter your full name"
+                           required>
                 </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="333217225" class="form-label">Email Address *</label>
+                    <input id="emailInput" 
+                           type="email" 
+                           name="entry.333217225" 
+                           class="form-input"
+                           placeholder="Enter your email address"
+                           required>
+                </div>
+
+                <!-- Address Field -->
+                <div class="form-group">
+                    <label for="117259822" class="form-label">Address</label>
+                    <input id="117259822" 
+                           type="text" 
+                           name="entry.117259822" 
+                           class="form-input"
+                           placeholder="Enter your address">                </div>
 
                 <input type="hidden" name="fvv" value="1">
                 <input type="hidden" name="fbzx" value="-6985932791640214213">
@@ -616,36 +540,8 @@
         </div>
     </div>
 
-    <script>
-        // Enhanced form interactions
+    <script>        // Enhanced form interactions
         document.addEventListener('DOMContentLoaded', function() {
-            // Radio button interactions
-            const radioOptions = document.querySelectorAll('.radio-option');
-            const radioInputs = document.querySelectorAll('.radio-input');
-            
-            radioOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const input = this.querySelector('.radio-input');
-                    input.checked = true;
-                    updateRadioSelection();
-                });
-            });
-            
-            radioInputs.forEach(input => {
-                input.addEventListener('change', updateRadioSelection);
-            });
-            
-            function updateRadioSelection() {
-                radioOptions.forEach(option => {
-                    const input = option.querySelector('.radio-input');
-                    if (input.checked) {
-                        option.classList.add('selected');
-                    } else {
-                        option.classList.remove('selected');
-                    }
-                });
-            }
-            
             // Form validation
             const form = document.getElementById('bootstrapForm');
             const nameInput = document.getElementById('nameInput');
@@ -656,9 +552,8 @@
             function validateForm() {
                 const name = nameInput.value.trim();
                 const email = emailInput.value.trim();
-                const ageSelected = document.querySelector('input[name="entry.1205965358"]:checked');
                 
-                const isValid = name && email && email.includes('@') && ageSelected;
+                const isValid = name && email && email.includes('@');
                 submitBtn.disabled = !isValid;
                 submitBtn.style.opacity = isValid ? '1' : '0.6';
                 
@@ -667,9 +562,6 @@
             
             nameInput.addEventListener('input', validateForm);
             emailInput.addEventListener('input', validateForm);
-            radioInputs.forEach(input => {
-                input.addEventListener('change', validateForm);
-            });
             
             // Initial validation
             validateForm();
@@ -706,14 +598,8 @@
                 error: function () {
                     // Show success message
                     successMessage.style.display = 'block';
-                    
-                    // Reset form
+                      // Reset form
                     $('#bootstrapForm')[0].reset();
-                    
-                    // Reset radio selections
-                    document.querySelectorAll('.radio-option').forEach(option => {
-                        option.classList.remove('selected');
-                    });
                     
                     // Reset button state
                     submitBtn.classList.remove('loading');

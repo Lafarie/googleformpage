@@ -3,272 +3,521 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Form</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha256-2Pjr1OlpZMY6qesJM68t2v39t+lMLvxwpa8QlRjJroA=" crossorigin="anonymous"></script>
+    <title>Alumni Registration - 25th Anniversary Reunion</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f1f5f9;
+            --accent-color: #10b981;
+            --danger-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Google Sans', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
-            color: #202124;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="2"/></g></g></svg>');
+            pointer-events: none;
         }
 
         .container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             width: 100%;
-            max-width: 600px;
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-2px);
-        }
-
-        fieldset {
-            border: none;
-            margin-bottom: 28px;
-            padding: 0;
+            max-width: 500px;
             position: relative;
+            animation: slideUp 0.6s ease-out;
         }
 
-        legend {
-            display: block;
-            margin-bottom: 12px;
-            color: #202124;
-            font-weight: 600;
-            font-size: 16px;
-            letter-spacing: 0.2px;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .form-group {
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e4e8;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background-color: #f8f9fa;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #1a73e8;
-            background-color: white;
-            box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
-        }
-
-        .radio {
-            margin-bottom: 12px;
-        }
-
-        .radio label {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            padding: 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-        }
-
-        .radio label:hover {
-            background-color: #f8f9fa;
-            border-color: #e0e4e8;
-        }
-
-        .radio input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #1a73e8;
-            margin-right: 4px;
-        }
-
-        .radio input[type="radio"]:checked + label {
-            background-color: #f2f7fe;
-            border-color: #1a73e8;
-        }
-
-        .btn-primary {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 12px;
-        }
-
-        .btn-primary:hover {
-            background: #1557b0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        /* Add a subtle header style */
         .form-header {
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 2px solid #f1f3f4;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
         }
 
-        .form-header h1 {
-            color: #1a73e8;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
+        .form-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
         }
 
-        .form-header p {
-            color: #5f6368;
-            font-size: 15px;
+        .form-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
             line-height: 1.5;
         }
 
-        /* Add required field indicator */
-        .required::after {
-            content: '*';
-            color: #d93025;
-            margin-left: 4px;
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
         }
 
-        /* Add responsive styles */
-        @media (max-width: 480px) {
-            .container {
-                padding: 24px;
-            }
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            transition: color 0.2s ease;
+        }
 
-            .form-header h1 {
-                font-size: 20px;
-            }
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 400;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-            .btn-primary {
-                padding: 12px 24px;
-                font-size: 14px;
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-input:focus + .form-label {
+            color: var(--primary-color);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .radio-option {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #ffffff;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .radio-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.02);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .radio-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .radio-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-checkmark {
+            height: 20px;
+            width: 20px;
+            background-color: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover .radio-checkmark {
+            border-color: var(--primary-color);
+        }
+
+        .radio-option.selected .radio-checkmark {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        .radio-checkmark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            transition: transform 0.2s ease;
+        }
+
+        .radio-option.selected .radio-checkmark::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .radio-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .buy-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .buy-section::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
+        }
+
+        .buy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53, #ff6b9d);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .buy-btn::after {
+            content: '✨';
+            position: absolute;
+            right: 1rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(135deg, #ff5252, #ff7043, #ff4081);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .buy-btn:hover::before {
+            left: 100%;
+        }
+
+        .buy-btn:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .buy-btn:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        .buy-btn-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
             }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .buy-section-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .success-message {
             display: none;
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius-md);
             text-align: center;
-            margin-top: 15px;
-            padding: 12px;
-            background: #e6f4ea;
-            border-radius: 4px;
-            color: #137333;
-            font-size: 14px;
+            margin-top: 1rem;
+            font-weight: 500;
+            animation: slideDown 0.5s ease-out;
         }
 
-        /* Ticket Section Styles */
-        #ticketSection {
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ticket-section {
             display: none;
             text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .ticket-title {
-            color: #202124;
-            font-size: 20px;
-            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .ticket-description {
-            color: #5f6368;
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .ticket-price {
-            font-size: 32px;
-            color: #1a73e8;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .ticket-features {
-            margin: 20px 0;
-            text-align: left;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 4px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            color: #202124;
-            font-size: 14px;
-        }
-
-        .feature-item::before {
-            content: '✓';
-            color: #1a73e8;
-            margin-right: 8px;
-            font-weight: bold;
-        }
-
-        .btn-buy {
-            background: #ea4335;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            max-width: 200px;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-buy:hover {
-            background: #d33426;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
         }
 
         .back-link {
             display: inline-block;
-            margin-top: 15px;
-            color: #1a73e8;
+            margin-top: 1.5rem;
+            color: var(--primary-color);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
+            transition: color 0.2s ease;
         }
 
         .back-link:hover {
+            color: var(--primary-dark);
             text-decoration: underline;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .form-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .ticket-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
     </style>
 </head>
@@ -276,6 +525,11 @@
     <div class="container">
         <!-- Form Section -->
         <div id="formSection">
+            <div class="form-header">
+                <h1 class="form-title">Alumni Registration</h1>
+                <p class="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
+            </div>
+
             <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOM2rqfU3xIIWNMjKXcnT2_M-B6WGF_MD_KVrNlTlk7WZrKg/formResponse"
                   target="_self"
                   id="bootstrapForm"
@@ -307,7 +561,7 @@
                     <div class="form-group">
                         <input id="117259822" type="text" name="entry.117259822" class="form-control">
                     </div>
-                </fieldset>
+                </div>
 
                 <input type="hidden" name="fvv" value="1">
                 <input type="hidden" name="fbzx" value="-6985932791640214213">
@@ -319,25 +573,108 @@
                 -->
                 <input type="hidden" name="pageHistory" value="0">
 
-                <input class="btn-primary" type="submit" value="Submit">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span id="submitText">Complete Registration</span>
+                </button>
             </form>
-            <div class="success-message">
-                Form submitted successfully!
+            
+            <div class="buy-section">
+                <p class="buy-section-title">Ready to join the celebration?</p>
+                <a href="https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets" 
+                   class="buy-btn"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <span class="buy-btn-icon">🎫</span>
+                    Purchase Tickets
+                </a>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                ✅ Registration completed successfully! Redirecting to ticket purchase...
             </div>
         </div>
 
         <!-- Ticket Section -->
-        <div id="ticketSection">
-            <h1 class="ticket-title">Get Your Ticket</h1>
+        <div id="ticketSection" class="ticket-section">
+            <h1 class="ticket-title">🎉 Registration Complete!</h1>
             <p class="ticket-description">
-                Thank you for registering 25th Anniversary Reunion! Complete your purchase to secure your spot.
+                Thank you for registering for our 25th Anniversary Reunion! 
+                Complete your purchase to secure your spot at this memorable celebration.
             </p>
             
-            <a href="https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets" class="btn-buy">Buy Now</a>
+            <a href="https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets" 
+               class="buy-btn"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="buy-btn-icon">🎫</span>
+                Purchase Your Tickets Now
+            </a>
+            
+            <a href="#" class="back-link" onclick="showForm(); return false;">
+                ← Back to Registration Form
+            </a>
         </div>
     </div>
 
     <script>
+        // Enhanced form interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Radio button interactions
+            const radioOptions = document.querySelectorAll('.radio-option');
+            const radioInputs = document.querySelectorAll('.radio-input');
+            
+            radioOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('.radio-input');
+                    input.checked = true;
+                    updateRadioSelection();
+                });
+            });
+            
+            radioInputs.forEach(input => {
+                input.addEventListener('change', updateRadioSelection);
+            });
+            
+            function updateRadioSelection() {
+                radioOptions.forEach(option => {
+                    const input = option.querySelector('.radio-input');
+                    if (input.checked) {
+                        option.classList.add('selected');
+                    } else {
+                        option.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // Form validation
+            const form = document.getElementById('bootstrapForm');
+            const nameInput = document.getElementById('nameInput');
+            const emailInput = document.getElementById('emailInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            
+            function validateForm() {
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                const ageSelected = document.querySelector('input[name="entry.1205965358"]:checked');
+                
+                const isValid = name && email && email.includes('@') && ageSelected;
+                submitBtn.disabled = !isValid;
+                submitBtn.style.opacity = isValid ? '1' : '0.6';
+                
+                return isValid;
+            }
+            
+            nameInput.addEventListener('input', validateForm);
+            emailInput.addEventListener('input', validateForm);
+            radioInputs.forEach(input => {
+                input.addEventListener('change', validateForm);
+            });
+            
+            // Initial validation
+            validateForm();
+        });
+
         function showTicket() {
             document.getElementById('formSection').style.display = 'none';
             document.getElementById('ticketSection').style.display = 'block';
@@ -346,16 +683,48 @@
         function showForm() {
             document.getElementById('ticketSection').style.display = 'none';
             document.getElementById('formSection').style.display = 'block';
-        }        $('#bootstrapForm').submit(function (event) {
+        }
+
+        // Enhanced form submission
+        $('#bootstrapForm').submit(function (event) {
             event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitText.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            
             var extraData = {};
             
             $('#bootstrapForm').ajaxSubmit({
                 data: extraData,
                 dataType: 'jsonp',
                 error: function () {
-                    showTicket();
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Reset form
                     $('#bootstrapForm')[0].reset();
+                    
+                    // Reset radio selections
+                    document.querySelectorAll('.radio-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Reset button state
+                    submitBtn.classList.remove('loading');
+                    submitText.textContent = 'Complete Registration';
+                    submitBtn.disabled = false;
+                    
+                    // Show ticket section after delay
+                    setTimeout(() => {
+                        showTicket();
+                        successMessage.style.display = 'none';
+                    }, 2000);
                 }
             });
         });

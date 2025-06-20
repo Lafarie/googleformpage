@@ -7,20 +7,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary-color: #f1f5f9;
-            --accent-color: #10b981;
+    <style>        :root {
+            --primary-color: #deb887;
+            --primary-dark: #cd853f;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ffffff;
             --danger-color: #ef4444;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #c0c0c0;
+            --border-color: #333333;
+            --gold-color: #daa520;
+            --silver-light: #ffffff;
+            --silver-medium: #e5e5e5;
+            --silver-dark: #c0c0c0;
+            --black-light: #1a1a1a;
+            --black-dark: #000000;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.25), 0 8px 10px -6px rgb(0 0 0 / 0.25);
             --radius-sm: 0.375rem;
             --radius-md: 0.5rem;
             --radius-lg: 0.75rem;
@@ -31,11 +36,9 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        body {
+        }        body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: url('bg.png') center/cover no-repeat fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -53,21 +56,41 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="2"/></g></g></svg>');
+            background: rgba(0, 0, 0, 0.7);
             pointer-events: none;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
+        }        .container {
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 2.5rem;
+            border: 2px solid var(--gold-color);
+            padding: 0;
             border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px rgba(218, 165, 32, 0.3);
             width: 100%;
             max-width: 500px;
             position: relative;
             animation: slideUp 0.6s ease-out;
+            overflow: hidden;
+        }
+        
+        .form-container {
+            padding: 2.5rem;
+        }
+        
+        .banner-image {
+            width: 100%;
+            height: 200px;
+            background: url('banner.jpg') center/cover no-repeat;
+            position: relative;
+        }
+        
+        .banner-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
         }
 
         @keyframes slideUp {
@@ -85,9 +108,7 @@
             text-align: center;
             margin-bottom: 2rem;
             position: relative;
-        }
-
-        .form-header::after {
+        }        .form-header::after {
             content: '';
             position: absolute;
             bottom: -1rem;
@@ -95,43 +116,43 @@
             transform: translateX(-50%);
             width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(90deg, var(--silver-medium), var(--black-light));
             border-radius: 2px;
-        }
-
-        .form-title {
-            font-size: 1.875rem;
+            box-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+        }        .form-title {
+            font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(135deg, var(--gold-color), var(--primary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
         }
 
         .form-subtitle {
-            color: var(--text-secondary);
-            font-size: 1rem;
+            color: var(--silver-medium);
+            font-size: 1.1rem;
             font-weight: 400;
             line-height: 1.5;
+            letter-spacing: 0.5px;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
             position: relative;
-        }
-
-        .form-label {
+        }        .form-label {
             display: block;
             font-size: 0.875rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--silver-medium);
             margin-bottom: 0.5rem;
             transition: color 0.2s ease;
-        }
-
-        .form-input {
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }.form-input {
             width: 100%;
             padding: 0.875rem 1rem;
             border: 2px solid var(--border-color);
@@ -141,28 +162,24 @@
             background-color: #ffffff;
             transition: all 0.3s ease;
             position: relative;
-        }
-
-        .form-input:focus {
+        }        .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: var(--silver-medium);
+            box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);
             transform: translateY(-1px);
         }
 
         .form-input:focus + .form-label {
             color: var(--primary-color);
-        }        .radio-group {
+        }.radio-group {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-        }
-
-        .submit-btn {
+        }        .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, var(--gold-color), var(--primary-dark));
+            color: var(--text-primary);
+            border: 1px solid var(--gold-color);
             padding: 1rem 2rem;
             border-radius: var(--radius-md);
             font-size: 1rem;
@@ -172,6 +189,9 @@
             position: relative;
             overflow: hidden;
             margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .submit-btn::before {
@@ -181,13 +201,13 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.2), transparent);
             transition: left 0.5s ease;
-        }
-
-        .submit-btn:hover {
+        }        .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 8px 25px rgba(218, 165, 32, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark), var(--gold-color));
+            border-color: var(--primary-color);
         }
 
         .submit-btn:hover::before {
@@ -204,9 +224,7 @@
             padding-top: 2rem;
             border-top: 1px solid var(--border-color);
             position: relative;
-        }
-
-        .buy-section::before {
+        }        .buy-section::before {
             content: '';
             position: absolute;
             top: -1px;
@@ -216,13 +234,13 @@
             height: 2px;
             background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
             border-radius: 2px;
+            box-shadow: 0 0 10px rgba(201, 176, 55, 0.4);
         }
 
         .buy-btn {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e53, #ff6b9d);
+            justify-content: center;            background: linear-gradient(135deg, var(--silver-medium), var(--silver-dark), var(--black-light));
             color: white;
             text-decoration: none;
             padding: 1rem 2.5rem;
@@ -230,7 +248,7 @@
             font-size: 1rem;
             font-weight: 700;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
             text-transform: uppercase;
@@ -258,12 +276,10 @@
             transform: scale(0);
             transition: all 0.3s ease;
             font-size: 1.2rem;
-        }
-
-        .buy-btn:hover {
+        }        .buy-btn:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
-            background: linear-gradient(135deg, #ff5252, #ff7043, #ff4081);
+            box-shadow: 0 15px 35px rgba(192, 192, 192, 0.4);
+            background: linear-gradient(135deg, #daa520, #c9b037, #c0c0c0);
             border-color: rgba(255, 255, 255, 0.2);
         }
 
@@ -302,18 +318,18 @@
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        .success-message {
+        }        .success-message {
             display: none;
-            background: linear-gradient(135deg, var(--accent-color), #059669);
-            color: white;
+            background: linear-gradient(135deg, var(--black-light), var(--black-dark));
+            color: var(--silver-light);
             padding: 1rem;
             border-radius: var(--radius-md);
             text-align: center;
             margin-top: 1rem;
             font-weight: 500;
             animation: slideDown 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--silver-dark);
         }
 
         @keyframes slideDown {
@@ -340,17 +356,16 @@
             to {
                 opacity: 1;
             }
-        }
-
-        .ticket-title {
+        }        .ticket-title {
             font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(135deg, var(--silver-medium), var(--silver-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .ticket-description {
@@ -444,24 +459,24 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<body>    <div class="container">
+        <div class="banner-image"></div>
         <!-- Form Section -->
-        <div id="formSection">
+        <div id="formSection" class="form-container">
             <div class="form-header">
                 <h1 class="form-title">Alumni Registration</h1>
                 <p class="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
-            </div>            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfOM2rqfU3xIIWNMjKXcnT2_M-B6WGF_MD_KVrNlTlk7WZrKg/formResponse"
+            </div><form action="https://docs.google.com/forms/d/e/1FAIpQLSdkXqhlRr7QlOUxROzVLp3k3mSlhjCwX-KfWmb1q9W8cywVvw/formResponse"
                   target="_self"
                   id="bootstrapForm"
                   method="POST">
 
-                <!-- Name Field -->
+                <!-- Full Name Field -->
                 <div class="form-group">
-                    <label for="2132433900" class="form-label">Full Name *</label>
+                    <label for="344858218" class="form-label">Full Name *</label>
                     <input id="nameInput" 
                            type="text" 
-                           name="entry.2132433900" 
+                           name="entry.344858218" 
                            class="form-input"
                            placeholder="Enter your full name"
                            required>
@@ -469,26 +484,39 @@
 
                 <!-- Email Field -->
                 <div class="form-group">
-                    <label for="333217225" class="form-label">Email Address *</label>
+                    <label for="853228319" class="form-label">Email Address *</label>
                     <input id="emailInput" 
                            type="email" 
-                           name="entry.333217225" 
+                           name="entry.853228319" 
                            class="form-input"
                            placeholder="Enter your email address"
                            required>
                 </div>
 
+                <!-- Contact Field -->
+                <div class="form-group">
+                    <label for="36020433" class="form-label">Contact *</label>
+                    <input id="contactInput" 
+                           type="text" 
+                           name="entry.36020433" 
+                           class="form-input"
+                           placeholder="Enter your contact number"
+                           required>
+                </div>
+
                 <!-- Address Field -->
                 <div class="form-group">
-                    <label for="117259822" class="form-label">Address</label>
-                    <input id="117259822" 
+                    <label for="962797291" class="form-label">Address *</label>
+                    <input id="addressInput" 
                            type="text" 
-                           name="entry.117259822" 
+                           name="entry.962797291" 
                            class="form-input"
-                           placeholder="Enter your address">                </div>
+                           placeholder="Enter your address"
+                           required>
+                </div>
 
                 <input type="hidden" name="fvv" value="1">
-                <input type="hidden" name="fbzx" value="-6985932791640214213">
+                <input type="hidden" name="fbzx" value="6683679982700934097">
                 <!--
                     CAVEAT: In multipages (multisection) forms, *pageHistory* field tells to google what sections we've currently completed.
                     This usually starts as "0" for the first page, then "0,1" in the second page... up to "0,1,2..N" in n-th page.
@@ -546,14 +574,18 @@
             const form = document.getElementById('bootstrapForm');
             const nameInput = document.getElementById('nameInput');
             const emailInput = document.getElementById('emailInput');
+            const contactInput = document.getElementById('contactInput');
+            const addressInput = document.getElementById('addressInput');
             const submitBtn = document.getElementById('submitBtn');
             const submitText = document.getElementById('submitText');
             
             function validateForm() {
                 const name = nameInput.value.trim();
                 const email = emailInput.value.trim();
+                const contact = contactInput.value.trim();
+                const address = addressInput.value.trim();
                 
-                const isValid = name && email && email.includes('@');
+                const isValid = name && email && email.includes('@') && contact && address;
                 submitBtn.disabled = !isValid;
                 submitBtn.style.opacity = isValid ? '1' : '0.6';
                 
@@ -562,6 +594,8 @@
             
             nameInput.addEventListener('input', validateForm);
             emailInput.addEventListener('input', validateForm);
+            contactInput.addEventListener('input', validateForm);
+            addressInput.addEventListener('input', validateForm);
             
             // Initial validation
             validateForm();

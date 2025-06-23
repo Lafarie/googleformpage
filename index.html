@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alumni Registration - 25th Anniversary Reunion</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>        :root {
             --primary-color: #deb887;
             --primary-dark: #cd853f;
@@ -691,16 +690,22 @@
                 address = document.getElementById('addressInput').value.trim();
             }
             
-            // Create URL parameters
-            const params = new URLSearchParams();
-            if (name) params.append('name', name);
-            if (email) params.append('email', email);
-            if (contact) params.append('contact', contact);
-            if (address) params.append('address', address);
+            // Create data object
+            const userData = {
+                name: name || '',
+                email: email || '',
+                contact: contact || '',
+                address: address || '',
+                timestamp: new Date().toISOString()
+            };
+
+            // Convert to JSON string
+            const jsonString = JSON.stringify(userData);            // Encode the data using base64 (simpler alternative to encryption)
+            const encoded = btoa(jsonString);
             
-            // Base URL for ticket purchase
+            // Create URL with encoded data
             const baseUrl = 'https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets';
-            const urlWithParams = `${baseUrl}?${params.toString()}`;
+            const urlWithParams = `${baseUrl}?data=${encodeURIComponent(encoded)}`;
             
             // Update all ticket purchase links
             const ticketLinks = document.querySelectorAll('a[href*="alumni-tickets"]');

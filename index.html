@@ -519,6 +519,21 @@
             white-space: nowrap;
             border: 0;
         }
+
+        .form-input.error {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 1px var(--danger-color);
+        }
+
+        .error-message {
+            display: none;
+            color: var(--danger-color);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Responsive design */
     </style>
 </head>
 <body>    <div class="container">
@@ -533,20 +548,31 @@
                   id="bootstrapForm"
                   method="POST">
 
-                <!-- Full Name Field -->
+                <!-- First Name Field -->
                 <div class="form-group">
-                    <label for="344858218" class="form-label">Full Name *</label>
-                    <input id="nameInput" 
+                    <label for="299599161" class="form-label">First Name *</label>
+                    <input id="firstNameInput" 
                            type="text" 
                            name="entry.344858218" 
                            class="form-input"
-                           placeholder="Enter your full name"
+                           placeholder="Enter your first name"
+                           required>
+                </div>
+
+                <!-- Last Name Field -->
+                <div class="form-group">
+                    <label for="671392012" class="form-label">Last Name *</label>
+                    <input id="lastNameInput" 
+                           type="text" 
+                           name="entry.491468228" 
+                           class="form-input"
+                           placeholder="Enter your last name"
                            required>
                 </div>
 
                 <!-- Email Field -->
                 <div class="form-group">
-                    <label for="853228319" class="form-label">Email Address *</label>
+                    <label for="1318576916" class="form-label">Email Address *</label>
                     <input id="emailInput" 
                            type="email" 
                            name="entry.853228319" 
@@ -557,18 +583,22 @@
 
                 <!-- Contact Field -->
                 <div class="form-group">
-                    <label for="36020433" class="form-label">Contact *</label>
+                    <label for="775017245" class="form-label">Contact *</label>
                     <input id="contactInput" 
-                           type="text" 
+                           type="tel" 
                            name="entry.36020433" 
                            class="form-input"
-                           placeholder="Enter your contact number"
+                           placeholder="Enter your 10-digit contact number"
+                           pattern="[0-9]{10}"
+                           maxlength="10"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                            required>
+                    <small class="error-message" id="contactError" style="display: none; color: var(--danger-color); font-size: 0.8rem; margin-top: 0.5rem;">Please enter a valid 10-digit contact number</small>
                 </div>
 
                 <!-- Address Field -->
                 <div class="form-group">
-                    <label for="962797291" class="form-label">Address *</label>
+                    <label for="1281073730" class="form-label">Address *</label>
                     <input id="addressInput" 
                            type="text" 
                            name="entry.962797291" 
@@ -578,13 +608,7 @@
                 </div>
 
                 <input type="hidden" name="fvv" value="1">
-                <input type="hidden" name="fbzx" value="6683679982700934097">
-                <!--
-                    CAVEAT: In multipages (multisection) forms, *pageHistory* field tells to google what sections we've currently completed.
-                    This usually starts as "0" for the first page, then "0,1" in the second page... up to "0,1,2..N" in n-th page.
-                    Keep this in mind if you plan to change this code to recreate any sort of multipage-feature in your exported form.
-                    We're setting this to the total number of pages in this form because we're sending all fields from all the section together.
-                -->
+                <input type="hidden" name="fbzx" value="-4292923465625270786">
                 <input type="hidden" name="pageHistory" value="0">
 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -631,29 +655,65 @@
     </div>
 
     <script>        // Enhanced form interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Form validation
+        document.addEventListener('DOMContentLoaded', function() {            // Form validation
             const form = document.getElementById('bootstrapForm');
-            const nameInput = document.getElementById('nameInput');
+            const firstNameInput = document.getElementById('firstNameInput');
+            const lastNameInput = document.getElementById('lastNameInput');
             const emailInput = document.getElementById('emailInput');
             const contactInput = document.getElementById('contactInput');
             const addressInput = document.getElementById('addressInput');
             const submitBtn = document.getElementById('submitBtn');
             const submitText = document.getElementById('submitText');
+            const contactError = document.getElementById('contactError');
             
-            function validateForm() {
-                const name = nameInput.value.trim();
+            function validateContact(contact) {
+                const regex = /^[0-9]{10}$/;
+                return regex.test(contact);
+            }
+              function validateForm() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
                 const email = emailInput.value.trim();
                 const contact = contactInput.value.trim();
                 const address = addressInput.value.trim();
                 
-                const isValid = name && email && email.includes('@') && contact && address;
+                // Contact validation
+                if (contact) {
+                    if (!validateContact(contact)) {
+                        contactError.style.display = 'block';
+                        contactInput.classList.add('error');
+                        return false;
+                    } else {
+                        contactError.style.display = 'none';
+                        contactInput.classList.remove('error');
+                    }
+                }
+                
+                const isValid = firstName && lastName && email && email.includes('@') && validateContact(contact) && address;
                 submitBtn.disabled = !isValid;
                 submitBtn.style.opacity = isValid ? '1' : '0.6';
                 
                 return isValid;
             }
-              nameInput.addEventListener('input', function() {
+
+            // Contact input validation
+            contactInput.addEventListener('input', function(e) {
+                // Remove any non-numeric characters
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+                
+                validateForm();
+                updateTicketLinks();
+            });
+            firstNameInput.addEventListener('input', function() {
+                validateForm();
+                updateTicketLinks();
+            });
+
+            lastNameInput.addEventListener('input', function() {
                 validateForm();
                 updateTicketLinks();
             });
@@ -677,14 +737,16 @@
             let name, email, contact, address;
             
             if (submittedFormData && Object.keys(submittedFormData).length > 0) {
-                // Use stored submitted data
-                name = submittedFormData.name;
+                // Use stored submitted data                
+                firstName = submittedFormData.firstName;
+                lastName = submittedFormData.lastName;
                 email = submittedFormData.email;
                 contact = submittedFormData.contact;
                 address = submittedFormData.address;
             } else {
-                // Use current input values
-                name = document.getElementById('nameInput').value.trim();
+                // Use current input values                
+                firstName = document.getElementById('firstNameInput').value.trim();
+                lastName = document.getElementById('lastNameInput').value.trim();
                 email = document.getElementById('emailInput').value.trim();
                 contact = document.getElementById('contactInput').value.trim();
                 address = document.getElementById('addressInput').value.trim();
@@ -692,7 +754,8 @@
             
             // Create data object
             const userData = {
-                name: name || '',
+                firstName: firstName || '',
+                lastName: lastName || '',
                 email: email || '',
                 contact: contact || '',
                 address: address || '',
@@ -736,7 +799,8 @@
             
             // Store form data before submission
             submittedFormData = {
-                name: document.getElementById('nameInput').value.trim(),
+                firstName: document.getElementById('firstNameInput').value.trim(),
+                lastName: document.getElementById('lastNameInput').value.trim(),
                 email: document.getElementById('emailInput').value.trim(),
                 contact: document.getElementById('contactInput').value.trim(),
                 address: document.getElementById('addressInput').value.trim()

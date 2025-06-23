@@ -393,22 +393,36 @@
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 2rem;
-        }
-
-        .back-link {
+        }        .back-link {
             display: inline-block;
             margin-top: 1.5rem;
             color: var(--primary-color);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: color 0.2s ease;
+            transition: all 0.3s ease;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            background: rgba(218, 165, 32, 0.1);
+            backdrop-filter: blur(10px);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .back-link:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
+            color: var(--text-primary);
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
+        }
+
+        .back-link:active {
+            transform: translateY(0);
         }
 
         /* Loading animation */
@@ -640,17 +654,63 @@
                 
                 return isValid;
             }
-            
-            nameInput.addEventListener('input', validateForm);
-            emailInput.addEventListener('input', validateForm);
-            contactInput.addEventListener('input', validateForm);
-            addressInput.addEventListener('input', validateForm);
-            
-            // Initial validation
+              nameInput.addEventListener('input', function() {
+                validateForm();
+                updateTicketLinks();
+            });
+            emailInput.addEventListener('input', function() {
+                validateForm();
+                updateTicketLinks();
+            });
+            contactInput.addEventListener('input', function() {
+                validateForm();
+                updateTicketLinks();
+            });
+            addressInput.addEventListener('input', function() {
+                validateForm();
+                updateTicketLinks();
+            });
+              // Initial validation and link update
             validateForm();
-        });
+            updateTicketLinks();
+        });        function updateTicketLinks() {
+            // Get form values - use submitted data if form is reset, otherwise current input values
+            let name, email, contact, address;
+            
+            if (submittedFormData && Object.keys(submittedFormData).length > 0) {
+                // Use stored submitted data
+                name = submittedFormData.name;
+                email = submittedFormData.email;
+                contact = submittedFormData.contact;
+                address = submittedFormData.address;
+            } else {
+                // Use current input values
+                name = document.getElementById('nameInput').value.trim();
+                email = document.getElementById('emailInput').value.trim();
+                contact = document.getElementById('contactInput').value.trim();
+                address = document.getElementById('addressInput').value.trim();
+            }
+            
+            // Create URL parameters
+            const params = new URLSearchParams();
+            if (name) params.append('name', name);
+            if (email) params.append('email', email);
+            if (contact) params.append('contact', contact);
+            if (address) params.append('address', address);
+            
+            // Base URL for ticket purchase
+            const baseUrl = 'https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets';
+            const urlWithParams = `${baseUrl}?${params.toString()}`;
+            
+            // Update all ticket purchase links
+            const ticketLinks = document.querySelectorAll('a[href*="alumni-tickets"]');
+            ticketLinks.forEach(link => {
+                link.href = urlWithParams;
+            });
+        }
 
         function showTicket() {
+            updateTicketLinks();
             document.getElementById('formSection').style.display = 'none';
             document.getElementById('ticketSection').style.display = 'block';
         }
@@ -658,7 +718,8 @@
         function showForm() {
             document.getElementById('ticketSection').style.display = 'none';
             document.getElementById('formSection').style.display = 'block';
-        }
+        }        // Store form data globally for use after form reset
+        let submittedFormData = {};
 
         // Enhanced form submission
         $('#bootstrapForm').submit(function (event) {
@@ -667,6 +728,14 @@
             const submitBtn = document.getElementById('submitBtn');
             const submitText = document.getElementById('submitText');
             const successMessage = document.getElementById('successMessage');
+            
+            // Store form data before submission
+            submittedFormData = {
+                name: document.getElementById('nameInput').value.trim(),
+                email: document.getElementById('emailInput').value.trim(),
+                contact: document.getElementById('contactInput').value.trim(),
+                address: document.getElementById('addressInput').value.trim()
+            };
             
             // Show loading state
             submitBtn.classList.add('loading');

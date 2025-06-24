@@ -7,838 +7,112 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        --primary-color: #deb887;
-        --primary-dark: #cd853f;
-        --secondary-color: #f8f9fa;
-        --accent-color: #ffffff;
-        --danger-color: #ef4444;
-        --text-primary: #ffffff;
-        --text-secondary: #c0c0c0;
-        --border-color: #333333;
-        --gold-color: #daa520;
-        --silver-light: #ffffff;
-        --silver-medium: #e5e5e5;
-        --silver-dark: #c0c0c0;
-        --black-light: #1a1a1a;
-        --black-dark: #000000;
-        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
-        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
-        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
-        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.25), 0 8px 10px -6px rgb(0 0 0 / 0.25);
-        --radius-sm: 0.375rem;
-        --radius-md: 0.5rem;
-        --radius-lg: 0.75rem;
-        --radius-xl: 1rem;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: url("bg.png") center/cover no-repeat fixed;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        color: var(--text-primary);
-        position: relative;
-        overflow-x: hidden;
-      }
-
-      body::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        pointer-events: none;
-      }
-      .container {
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(20px);
-        border: 2px solid var(--gold-color);
-        padding: 0;
-        border-radius: var(--radius-xl);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px rgba(218, 165, 32, 0.3);
-        width: 100%;
-        max-width: 450px;
-        position: relative;
-        animation: slideUp 0.6s ease-out;
-        overflow: hidden;
-        margin: 1rem;
-        max-height: 95vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .form-container {
-        padding: 1.5rem;
-        overflow-y: auto;
-        flex-grow: 1;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gold-color) var(--black-dark);
-      }
-
-      .form-container::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .form-container::-webkit-scrollbar-track {
-        background: var(--black-dark);
-      }
-
-      .form-container::-webkit-scrollbar-thumb {
-        background-color: var(--gold-color);
-        border-radius: 3px;
-      }
-
-      .banner-image {
-        width: 100%;
-        height: 180px;
-        background: url("banner.jpg") center/cover no-repeat;
-        position: fit;
-        flex-shrink: 0;
-      }
-
-      .banner-image::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-      }
-
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .form-header {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        position: relative;
-      }
-
-      .form-header::after {
-        content: "";
-        position: absolute;
-        bottom: -1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, var(--silver-medium), var(--black-light));
-        border-radius: 2px;
-        box-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
-      }
-      .form-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 0.25rem;
-        background: linear-gradient(135deg, var(--gold-color), var(--primary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        letter-spacing: 1px;
-      }
-
-      .form-subtitle {
-        color: var(--silver-medium);
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
-      }
-
-      .form-group {
-        margin-bottom: 1.5rem;
-        position: relative;
-      }
-
-      .form-label {
-        display: block;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--silver-medium);
-        margin-bottom: 0.5rem;
-        transition: color 0.2s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .form-input {
-        width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid var(--border-color);
-        border-radius: var(--radius-md);
-        font-size: 1rem;
-        font-weight: 400;
-        background-color: #ffffff;
-        transition: all 0.3s ease;
-        position: relative;
-      }
-
-      .form-input:focus {
-        outline: none;
-        border-color: var(--silver-medium);
-        box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);
-        transform: translateY(-1px);
-      }
-
-      .form-input:focus + .form-label {
-        color: var(--primary-color);
-      }
-
-      .radio-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-
-      .phone-input-container {
-        display: flex;
-        gap: 0.5rem;
-        align-items: stretch;
-      }
-
-      .phone-input-container select {
-        min-width: 200px;
-        max-width: 220px;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-      }
-
-      .phone-input-container input {
-        flex: 1;
-        min-width: 0;
-      }
-
-      .submit-btn {
-        width: 100%;
-        background: linear-gradient(135deg, var(--gold-color), var(--primary-dark));
-        color: var(--text-primary);
-        border: 1px solid var(--gold-color);
-        padding: 1rem 2rem;
-        border-radius: var(--radius-md);
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        margin-top: 1rem;
-        box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .submit-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.2), transparent);
-        transition: left 0.5s ease;
-      }
-      .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(218, 165, 32, 0.3);
-        background: linear-gradient(135deg, var(--primary-dark), var(--gold-color));
-        border-color: var(--primary-color);
-      }
-
-      .submit-btn:hover::before {
-        left: 100%;
-      }
-
-      .submit-btn:active {
-        transform: translateY(0);
-      }
-
-      .buy-section {
-        text-align: center;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border-color);
-        position: relative;
-      }
-      .buy-section::before {
-        content: "";
-        position: absolute;
-        top: -1px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 2px;
-        background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
-        border-radius: 2px;
-        box-shadow: 0 0 10px rgba(201, 176, 55, 0.4);
-      }
-
-      .buy-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, var(--silver-medium), var(--silver-dark), var(--black-light));
-        color: white;
-        text-decoration: none;
-        padding: 1rem 2.5rem;
-        border-radius: var(--radius-lg);
-        font-size: 1rem;
-        font-weight: 700;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        position: relative;
-        overflow: hidden;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border: 2px solid transparent;
-        background-clip: padding-box;
-      }
-
-      .buy-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: left 0.6s ease;
-      }
-
-      .buy-btn::after {
-        content: "✨";
-        position: absolute;
-        right: 1rem;
-        opacity: 0;
-        transform: scale(0);
-        transition: all 0.3s ease;
-        font-size: 1.2rem;
-      }
-
-      .buy-btn:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 15px 35px rgba(192, 192, 192, 0.4);
-        background: linear-gradient(135deg, #daa520, #c9b037, #c0c0c0);
-        border-color: rgba(255, 255, 255, 0.2);
-      }
-
-      .buy-btn:hover::before {
-        left: 100%;
-      }
-
-      .buy-btn:hover::after {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      .buy-btn:active {
-        transform: translateY(-1px) scale(1);
-      }
-
-      .buy-btn-icon {
-        margin-right: 0.5rem;
-        font-size: 1.2rem;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-      }
-
-      .buy-section-title {
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-        font-weight: 500;
-        margin-bottom: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .success-message {
-        display: none;
-        background: linear-gradient(135deg, var(--black-light), var(--black-dark));
-        color: var(--silver-light);
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        text-align: center;
-        margin-top: 1rem;
-        font-weight: 500;
-        animation: slideDown 0.5s ease-out;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--silver-dark);
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .ticket-section {
-        display: none;
-        text-align: center;
-        animation: fadeIn 0.6s ease-out;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      .ticket-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, var(--silver-medium), var(--silver-dark));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      .ticket-description {
-        color: var(--text-secondary);
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-      }
-
-      .back-link {
-        display: inline-block;
-        margin-top: 1.5rem;
-        color: var(--primary-color);
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        padding: 0.75rem 1.5rem;
-        border: 2px solid var(--primary-color);
-        border-radius: var(--radius-md);
-        background: rgba(218, 165, 32, 0.1);
-        backdrop-filter: blur(10px);
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
-
-      .back-link:hover {
-        color: var(--text-primary);
-        background: var(--primary-color);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
-      }
-
-      .back-link:active {
-        transform: translateY(0);
-      }
-
-      /* Loading animation */
-      .loading {
-        position: relative;
-        pointer-events: none;
-      }
-
-      .loading::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s ease-in-out infinite;
-      }
-
-      @keyframes spin {
-        to {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-
-      /* Responsive design */
-      @media (max-width: 640px) {
-        body {
-          padding: 0.5rem;
-        }
-
-        .container {
-          margin: 0.5rem;
-          max-height: 98vh;
-        }
-
-        .form-container {
-          padding: 1.25rem;
-        }
-
-        .banner-image {
-          height: 120px;
-        }
-
-        .form-title {
-          font-size: 1.5rem;
-        }
-
-        .form-subtitle {
-          font-size: 0.9rem;
-        }
-
-        .form-group {
-          margin-bottom: 0.875rem;
-        }
-
-        .form-input {
-          padding: 0.75rem 1rem;
-        }
-
-        .phone-input-container {
-          gap: 0.25rem;
-          flex-direction: column;
-        }
-
-        .phone-input-container select {
-          min-width: 100%;
-          max-width: 100%;
-          font-size: 0.8rem;
-          padding: 0.75rem 0.5rem;
-          margin-bottom: 0.5rem;
-        }
-
-        .ticket-title {
-          font-size: 1.5rem;
-        }
-
-        .submit-btn {
-          padding: 0.875rem 1.5rem;
-        }
-      }
-
-      @media (min-height: 800px) {
-        .container {
-          max-height: 85vh;
-        }
-      }
-
-      /* Accessibility improvements */
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      .form-input.error {
-        border-color: var(--danger-color);
-        box-shadow: 0 0 0 1px var(--danger-color);
-      }
-
-      .error-message {
-        display: none;
-        color: var(--danger-color);
-        font-size: 0.8rem;
-        margin-top: 0.5rem;
-        animation: fadeIn 0.3s ease-out;
-      }
-
-      /* Responsive design */
-    </style>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <div class="container">
       <div class="banner-image"></div>
       <!-- Form Section -->
       <div id="formSection" class="form-container">
-        <div class="form-header">
-          <h1 class="form-title">Alumni Registration</h1>
-          <p class="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
-        </div>
         <form action="https://docs.google.com/forms/d/e/1FAIpQLSdkXqhlRr7QlOUxROzVLp3k3mSlhjCwX-KfWmb1q9W8cywVvw/formResponse" target="_self" id="bootstrapForm" method="POST">
-          <!-- First Name Field -->
-          <div class="form-group">
-            <label for="299599161" class="form-label">First Name *</label>
-            <input id="firstNameInput" type="text" name="entry.344858218" class="form-input" placeholder="Enter your first name" required />
-          </div>
+          <fieldset>
+            <h2>Alumni Registration<br><small>Join us for our 25th Anniversary Reunion celebration</small></h2>
+          </fieldset>
 
-          <!-- Last Name Field -->
-          <div class="form-group">
-            <label for="671392012" class="form-label">Last Name *</label>
-            <input id="lastNameInput" type="text" name="entry.491468228" class="form-input" placeholder="Enter your last name" required />
-          </div>
-
-          <!-- Email Field -->
-          <div class="form-group">
-            <label for="1318576916" class="form-label">Email Address *</label>
-            <input id="emailInput" type="email" name="entry.853228319" class="form-input" placeholder="Enter your email address" required />
-          </div>
-
-          <!-- Contact Field -->
-          <div class="form-group">
-            <label for="775017245" class="form-label">Contact *</label>
-            <div class="phone-input-container" style="display: flex; gap: 0.5rem">
-              <select id="countryCodeSelect" class="form-input" style="width: 200px">
-                <option value="+93">🇦🇫 Afghanistan (+93)</option>
-                <option value="+355">🇦🇱 Albania (+355)</option>
-                <option value="+213">🇩🇿 Algeria (+213)</option>
-                <option value="+1">🇺🇸 United States (+1)</option>
-                <option value="+376">🇦🇩 Andorra (+376)</option>
-                <option value="+244">🇦🇴 Angola (+244)</option>
-                <option value="+54">🇦🇷 Argentina (+54)</option>
-                <option value="+374">🇦🇲 Armenia (+374)</option>
-                <option value="+61">🇦🇺 Australia (+61)</option>
-                <option value="+43">🇦🇹 Austria (+43)</option>
-                <option value="+994">🇦🇿 Azerbaijan (+994)</option>
-                <option value="+973">🇧🇭 Bahrain (+973)</option>
-                <option value="+880">🇧🇩 Bangladesh (+880)</option>
-                <option value="+375">🇧🇾 Belarus (+375)</option>
-                <option value="+32">🇧🇪 Belgium (+32)</option>
-                <option value="+501">🇧🇿 Belize (+501)</option>
-                <option value="+229">🇧🇯 Benin (+229)</option>
-                <option value="+975">🇧🇹 Bhutan (+975)</option>
-                <option value="+591">🇧🇴 Bolivia (+591)</option>
-                <option value="+387">🇧🇦 Bosnia and Herzegovina (+387)</option>
-                <option value="+267">🇧🇼 Botswana (+267)</option>
-                <option value="+55">🇧🇷 Brazil (+55)</option>
-                <option value="+673">🇧🇳 Brunei (+673)</option>
-                <option value="+359">🇧🇬 Bulgaria (+359)</option>
-                <option value="+226">🇧🇫 Burkina Faso (+226)</option>
-                <option value="+257">🇧🇮 Burundi (+257)</option>
-                <option value="+855">🇰🇭 Cambodia (+855)</option>
-                <option value="+237">🇨🇲 Cameroon (+237)</option>
-                <option value="+1">🇨🇦 Canada (+1)</option>
-                <option value="+238">🇨🇻 Cape Verde (+238)</option>
-                <option value="+236">🇨🇫 Central African Republic (+236)</option>
-                <option value="+235">🇹🇩 Chad (+235)</option>
-                <option value="+56">🇨🇱 Chile (+56)</option>
-                <option value="+86">🇨🇳 China (+86)</option>
-                <option value="+57">🇨🇴 Colombia (+57)</option>
-                <option value="+269">🇰🇲 Comoros (+269)</option>
-                <option value="+242">🇨🇬 Congo (+242)</option>
-                <option value="+506">🇨🇷 Costa Rica (+506)</option>
-                <option value="+385">🇭🇷 Croatia (+385)</option>
-                <option value="+53">🇨🇺 Cuba (+53)</option>
-                <option value="+357">🇨🇾 Cyprus (+357)</option>
-                <option value="+420">🇨🇿 Czech Republic (+420)</option>
-                <option value="+45">🇩🇰 Denmark (+45)</option>
-                <option value="+253">🇩🇯 Djibouti (+253)</option>
-                <option value="+593">🇪🇨 Ecuador (+593)</option>
-                <option value="+20">🇪🇬 Egypt (+20)</option>
-                <option value="+503">🇸🇻 El Salvador (+503)</option>
-                <option value="+240">🇬🇶 Equatorial Guinea (+240)</option>
-                <option value="+291">🇪🇷 Eritrea (+291)</option>
-                <option value="+372">🇪🇪 Estonia (+372)</option>
-                <option value="+251">🇪🇹 Ethiopia (+251)</option>
-                <option value="+679">🇫🇯 Fiji (+679)</option>
-                <option value="+358">🇫🇮 Finland (+358)</option>
-                <option value="+33">🇫🇷 France (+33)</option>
-                <option value="+241">🇬🇦 Gabon (+241)</option>
-                <option value="+220">🇬🇲 Gambia (+220)</option>
-                <option value="+995">🇬🇪 Georgia (+995)</option>
-                <option value="+49">🇩🇪 Germany (+49)</option>
-                <option value="+233">🇬🇭 Ghana (+233)</option>
-                <option value="+30">🇬🇷 Greece (+30)</option>
-                <option value="+502">🇬🇹 Guatemala (+502)</option>
-                <option value="+224">🇬🇳 Guinea (+224)</option>
-                <option value="+245">🇬🇼 Guinea-Bissau (+245)</option>
-                <option value="+592">🇬🇾 Guyana (+592)</option>
-                <option value="+509">🇭🇹 Haiti (+509)</option>
-                <option value="+504">🇭🇳 Honduras (+504)</option>
-                <option value="+852">🇭🇰 Hong Kong (+852)</option>
-                <option value="+36">🇭🇺 Hungary (+36)</option>
-                <option value="+354">🇮🇸 Iceland (+354)</option>
-                <option value="+91">🇮🇳 India (+91)</option>
-                <option value="+62">🇮🇩 Indonesia (+62)</option>
-                <option value="+98">🇮🇷 Iran (+98)</option>
-                <option value="+964">🇮🇶 Iraq (+964)</option>
-                <option value="+353">🇮🇪 Ireland (+353)</option>
-                <option value="+972">🇮🇱 Israel (+972)</option>
-                <option value="+39">🇮🇹 Italy (+39)</option>
-                <option value="+225">🇨🇮 Ivory Coast (+225)</option>
-                <option value="+1">🇯🇲 Jamaica (+1)</option>
-                <option value="+81">🇯🇵 Japan (+81)</option>
-                <option value="+962">🇯🇴 Jordan (+962)</option>
-                <option value="+7">🇰🇿 Kazakhstan (+7)</option>
-                <option value="+254">🇰🇪 Kenya (+254)</option>
-                <option value="+686">🇰🇮 Kiribati (+686)</option>
-                <option value="+383">🇽🇰 Kosovo (+383)</option>
-                <option value="+965">🇰🇼 Kuwait (+965)</option>
-                <option value="+996">🇰🇬 Kyrgyzstan (+996)</option>
-                <option value="+856">🇱🇦 Laos (+856)</option>
-                <option value="+371">🇱🇻 Latvia (+371)</option>
-                <option value="+961">🇱🇧 Lebanon (+961)</option>
-                <option value="+266">🇱🇸 Lesotho (+266)</option>
-                <option value="+231">🇱🇷 Liberia (+231)</option>
-                <option value="+218">🇱🇾 Libya (+218)</option>
-                <option value="+423">🇱🇮 Liechtenstein (+423)</option>
-                <option value="+370">🇱🇹 Lithuania (+370)</option>
-                <option value="+352">🇱🇺 Luxembourg (+352)</option>
-                <option value="+853">🇲🇴 Macau (+853)</option>
-                <option value="+389">🇲🇰 Macedonia (+389)</option>
-                <option value="+261">🇲🇬 Madagascar (+261)</option>
-                <option value="+265">🇲🇼 Malawi (+265)</option>
-                <option value="+60">🇲🇾 Malaysia (+60)</option>
-                <option value="+960">🇲🇻 Maldives (+960)</option>
-                <option value="+223">🇲🇱 Mali (+223)</option>
-                <option value="+356">🇲🇹 Malta (+356)</option>
-                <option value="+692">🇲🇭 Marshall Islands (+692)</option>
-                <option value="+222">🇲🇷 Mauritania (+222)</option>
-                <option value="+230">🇲🇺 Mauritius (+230)</option>
-                <option value="+52">🇲🇽 Mexico (+52)</option>
-                <option value="+691">🇫🇲 Micronesia (+691)</option>
-                <option value="+373">🇲🇩 Moldova (+373)</option>
-                <option value="+377">🇲🇨 Monaco (+377)</option>
-                <option value="+976">🇲🇳 Mongolia (+976)</option>
-                <option value="+382">🇲🇪 Montenegro (+382)</option>
-                <option value="+212">🇲🇦 Morocco (+212)</option>
-                <option value="+258">🇲🇿 Mozambique (+258)</option>
-                <option value="+95">🇲🇲 Myanmar (+95)</option>
-                <option value="+264">🇳🇦 Namibia (+264)</option>
-                <option value="+674">🇳🇷 Nauru (+674)</option>
-                <option value="+977">🇳🇵 Nepal (+977)</option>
-                <option value="+31">🇳🇱 Netherlands (+31)</option>
-                <option value="+64">🇳🇿 New Zealand (+64)</option>
-                <option value="+505">🇳🇮 Nicaragua (+505)</option>
-                <option value="+227">🇳🇪 Niger (+227)</option>
-                <option value="+234">🇳🇬 Nigeria (+234)</option>
-                <option value="+850">🇰🇵 North Korea (+850)</option>
-                <option value="+47">🇳🇴 Norway (+47)</option>
-                <option value="+968">🇴🇲 Oman (+968)</option>
-                <option value="+92">🇵🇰 Pakistan (+92)</option>
-                <option value="+680">🇵🇼 Palau (+680)</option>
-                <option value="+970">🇵🇸 Palestine (+970)</option>
-                <option value="+507">🇵🇦 Panama (+507)</option>
-                <option value="+675">🇵🇬 Papua New Guinea (+675)</option>
-                <option value="+595">🇵🇾 Paraguay (+595)</option>
-                <option value="+51">🇵🇪 Peru (+51)</option>
-                <option value="+63">🇵🇭 Philippines (+63)</option>
-                <option value="+48">🇵🇱 Poland (+48)</option>
-                <option value="+351">🇵🇹 Portugal (+351)</option>
-                <option value="+974">🇶🇦 Qatar (+974)</option>
-                <option value="+40">🇷🇴 Romania (+40)</option>
-                <option value="+7">🇷🇺 Russia (+7)</option>
-                <option value="+250">🇷🇼 Rwanda (+250)</option>
-                <option value="+685">🇼🇸 Samoa (+685)</option>
-                <option value="+378">🇸🇲 San Marino (+378)</option>
-                <option value="+239">🇸🇹 Sao Tome and Principe (+239)</option>
-                <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
-                <option value="+221">🇸🇳 Senegal (+221)</option>
-                <option value="+381">🇷🇸 Serbia (+381)</option>
-                <option value="+248">🇸🇨 Seychelles (+248)</option>
-                <option value="+232">🇸🇱 Sierra Leone (+232)</option>
-                <option value="+65">🇸🇬 Singapore (+65)</option>
-                <option value="+421">🇸🇰 Slovakia (+421)</option>
-                <option value="+386">🇸🇮 Slovenia (+386)</option>
-                <option value="+677">🇸🇧 Solomon Islands (+677)</option>
-                <option value="+252">🇸🇴 Somalia (+252)</option>
-                <option value="+27">🇿🇦 South Africa (+27)</option>
-                <option value="+82">🇰🇷 South Korea (+82)</option>
-                <option value="+211">🇸🇸 South Sudan (+211)</option>
-                <option value="+34">🇪🇸 Spain (+34)</option>
-                <option value="+94" selected>🇱🇰 Sri Lanka (+94)</option>
-                <option value="+249">🇸🇩 Sudan (+249)</option>
-                <option value="+597">🇸🇷 Suriname (+597)</option>
-                <option value="+268">🇸🇿 Swaziland (+268)</option>
-                <option value="+46">🇸🇪 Sweden (+46)</option>
-                <option value="+41">🇨🇭 Switzerland (+41)</option>
-                <option value="+963">🇸🇾 Syria (+963)</option>
-                <option value="+886">🇹🇼 Taiwan (+886)</option>
-                <option value="+992">🇹🇯 Tajikistan (+992)</option>
-                <option value="+255">🇹🇿 Tanzania (+255)</option>
-                <option value="+66">🇹🇭 Thailand (+66)</option>
-                <option value="+228">🇹🇬 Togo (+228)</option>
-                <option value="+676">🇹🇴 Tonga (+676)</option>
-                <option value="+1">🇹🇹 Trinidad and Tobago (+1)</option>
-                <option value="+216">🇹🇳 Tunisia (+216)</option>
-                <option value="+90">🇹🇷 Turkey (+90)</option>
-                <option value="+993">🇹🇲 Turkmenistan (+993)</option>
-                <option value="+688">🇹🇻 Tuvalu (+688)</option>
-                <option value="+256">🇺🇬 Uganda (+256)</option>
-                <option value="+380">🇺🇦 Ukraine (+380)</option>
-                <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
-                <option value="+44">🇬🇧 United Kingdom (+44)</option>
-                <option value="+598">🇺🇾 Uruguay (+598)</option>
-                <option value="+998">🇺🇿 Uzbekistan (+998)</option>
-                <option value="+678">🇻🇺 Vanuatu (+678)</option>
-                <option value="+379">🇻🇦 Vatican City (+379)</option>
-                <option value="+58">🇻🇪 Venezuela (+58)</option>
-                <option value="+84">🇻🇳 Vietnam (+84)</option>
-                <option value="+967">🇾🇪 Yemen (+967)</option>
-                <option value="+260">🇿🇲 Zambia (+260)</option>
-                <option value="+263">🇿🇼 Zimbabwe (+263)</option>
-              </select>
-              <input id="contactInput" type="tel" name="entry.36020433" class="form-input" placeholder="Enter your phone number" style="flex: 1" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+          <!-- Field type: "short" id: "299599161" -->
+          <fieldset>
+            <legend for="299599161">First Name</legend>
+            <div class="form-group">
+              <input id="344858218" type="text" name="entry.344858218" class="form-control">
             </div>
-            <small class="error-message" id="contactError" style="display: none; color: var(--danger-color); font-size: 0.8rem; margin-top: 0.5rem">Please enter a valid phone number</small>
-          </div>
+          </fieldset>
 
-          <!-- Address Field -->
-          <div class="form-group">
-            <label for="1281073730" class="form-label">Address *</label>
-            <input id="addressInput" type="text" name="entry.962797291" class="form-input" placeholder="Enter your address" required />
-          </div>
+          <!-- Field type: "short" id: "671392012" -->
+          <fieldset>
+            <legend for="671392012">Last Name</legend>
+            <div class="form-group">
+              <input id="491468228" type="text" name="entry.491468228" class="form-control">
+            </div>
+          </fieldset>
 
-          <input type="hidden" name="fvv" value="1" />
-          <input type="hidden" name="fbzx" value="-4292923465625270786" />
-          <input type="hidden" name="pageHistory" value="0" />
+          <!-- Field type: "choices" id: "343808956" -->
+          <fieldset>
+            <legend for="343808956">Gender</legend>
+            <div class="form-group">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="entry.1816651679" value="Male">
+                  Male
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="entry.1816651679" value="Female">
+                  Female
+                </label>
+              </div>
+            </div>
+          </fieldset>
 
-          <button type="submit" class="submit-btn" id="submitBtn">
-            <span id="submitText">Complete Registration</span>
-          </button>
+          <!-- Field type: "short" id: "1318576916" -->
+          <fieldset>
+            <legend for="1318576916">Email Address</legend>
+            <div class="form-group">
+              <input id="853228319" type="text" name="entry.853228319" class="form-control">
+            </div>
+          </fieldset>
+
+          <!-- Field type: "short" id: "775017245" -->
+          <fieldset>
+            <legend for="775017245">Contact</legend>
+            <div class="form-group">
+              <input id="36020433" type="text" name="entry.36020433" class="form-control">
+            </div>
+          </fieldset>
+
+          <!-- Field type: "short" id: "1281073730" -->
+          <fieldset>
+            <legend for="1281073730">Country</legend>
+            <div class="form-group">
+              <div class="country-dropdown-container">
+                <input id="962797291" type="text" name="entry.962797291" class="form-control country-input" placeholder="Type to search countries..." autocomplete="off">
+                <div class="country-dropdown" id="countryDropdown">
+                  <!-- Countries will be loaded dynamically from country.json -->
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Field type: "choices" id: "1583862723" -->
+          <fieldset>
+            <legend for="1583862723">Stream</legend>
+            <div class="form-group">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="entry.1045473638" value="Physical Science">
+                  Physical Science
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="entry.1045473638" value="Bio Science">
+                  Bio Science
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <input type="hidden" name="fvv" value="1">
+          <input type="hidden" name="fbzx" value="6853233660929213177">
+          <!--
+              CAVEAT: In multipages (multisection) forms, *pageHistory* field tells to google what sections we've currently completed.
+              This usually starts as "0" for the first page, then "0,1" in the second page... up to "0,1,2..N" in n-th page.
+              Keep this in mind if you plan to change this code to recreate any sort of multipage-feature in your exported form.
+              We're setting this to the total number of pages in this form because we're sending all fields from all the section together.
+          -->
+          <input type="hidden" name="pageHistory" value="0">
+
+          <input class="btn btn-primary" type="submit" value="Submit">
         </form>
 
         <div class="buy-section">
@@ -867,113 +141,532 @@
     </div>
 
     <script>
-      // Enhanced form interactions
-      document.addEventListener("DOMContentLoaded", function () {
-        // Form validation
-        const form = document.getElementById("bootstrapForm");
-        const firstNameInput = document.getElementById("firstNameInput");
-        const lastNameInput = document.getElementById("lastNameInput");
-        const emailInput = document.getElementById("emailInput");
-        const contactInput = document.getElementById("contactInput");
-        const countryCodeSelect = document.getElementById("countryCodeSelect");
-        const addressInput = document.getElementById("addressInput");
-        const submitBtn = document.getElementById("submitBtn");
-        const submitText = document.getElementById("submitText");
-        const contactError = document.getElementById("contactError");
+      // Global variable to store country data loaded from JSON
+      let countryCodeMap = {};
 
-        function validateContact(contact) {
-          // Basic validation - must be at least 6 digits and max 15 digits
-          const regex = /^[0-9]{6,15}$/;
-          return regex.test(contact);
+      // Load country data from external JSON file
+      async function loadCountryData() {
+        try {
+          const response = await fetch('country.json');
+          countryCodeMap = await response.json();
+          console.log('Country data loaded successfully');
+        } catch (error) {
+          console.error('Error loading country data:', error);
+          // Fallback - use a minimal dataset if loading fails
+          countryCodeMap = {
+            "Sri Lanka": { "code": "+94", "removePrefix": "0", "minLength": 9, "maxLength": 9, "flag": "🇱🇰" },
+            "United States": { "code": "+1", "removePrefix": "", "minLength": 10, "maxLength": 10, "flag": "🇺🇸" },
+            "United Kingdom": { "code": "+44", "removePrefix": "0", "minLength": 10, "maxLength": 11, "flag": "🇬🇧" }
+          };
         }
+      }
+
+      // Initialize country dropdown dynamically
+      function populateCountryDropdown() {
+        const countryDropdown = document.getElementById("countryDropdown");
+        countryDropdown.innerHTML = ""; // Clear existing options
+        
+        Object.keys(countryCodeMap).forEach(countryName => {
+          const countryConfig = countryCodeMap[countryName];
+          const option = document.createElement("div");
+          option.className = "country-option";
+          option.setAttribute("data-value", countryName);
+          option.textContent = `${countryConfig.flag} ${countryName}`;
+          countryDropdown.appendChild(option);
+        });
+        
+        // Re-initialize dropdown functionality after population
+        initializeCountryDropdown();
+      }
+
+      // Country dropdown functionality
+      function initializeCountryDropdown() {
+        const countryInput = document.getElementById("962797291");
+        const countryDropdown = document.getElementById("countryDropdown");
+        const countryOptions = document.querySelectorAll(".country-option");
+        let filteredOptions = Array.from(countryOptions);
+        let highlightedIndex = -1;
+
+        // Show dropdown when input is focused
+        countryInput.addEventListener("focus", function () {
+          countryDropdown.classList.add("show");
+          filterOptions("");
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+          if (!countryInput.contains(e.target) && !countryDropdown.contains(e.target)) {
+            countryDropdown.classList.remove("show");
+          }
+        });
+
+        // Filter options based on input
+        countryInput.addEventListener("input", function () {
+          const query = this.value.toLowerCase();
+          filterOptions(query);
+          highlightedIndex = -1;
+        });
+
+        // Handle keyboard navigation
+        countryInput.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            highlightedIndex = Math.min(highlightedIndex + 1, filteredOptions.length - 1);
+            updateHighlight();
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            highlightedIndex = Math.max(highlightedIndex - 1, -1);
+            updateHighlight();
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (highlightedIndex >= 0) {
+              selectOption(filteredOptions[highlightedIndex]);
+            }
+          } else if (e.key === "Escape") {
+            countryDropdown.classList.remove("show");
+            highlightedIndex = -1;
+          }
+        });
+
+        // Handle option selection
+        countryOptions.forEach(option => {
+          option.addEventListener("click", function () {
+            selectOption(this);
+          });
+        });
+
+        function filterOptions(query) {
+          filteredOptions = [];
+          const currentOptions = document.querySelectorAll(".country-option");
+          currentOptions.forEach(option => {
+            const country = option.getAttribute("data-value").toLowerCase();
+            const text = option.textContent.toLowerCase();
+            if (country.includes(query) || text.includes(query)) {
+              option.style.display = "block";
+              filteredOptions.push(option);
+            } else {
+              option.style.display = "none";
+            }
+          });
+          
+          if (filteredOptions.length > 0) {
+            countryDropdown.classList.add("show");
+          } else {
+            countryDropdown.classList.remove("show");
+          }
+        }
+
+        function updateHighlight() {
+          const currentOptions = document.querySelectorAll(".country-option");
+          currentOptions.forEach(option => {
+            option.classList.remove("highlighted");
+          });
+          
+          if (highlightedIndex >= 0 && filteredOptions[highlightedIndex]) {
+            filteredOptions[highlightedIndex].classList.add("highlighted");
+            filteredOptions[highlightedIndex].scrollIntoView({
+              block: "nearest"
+            });
+          }
+        }
+
+        function selectOption(option) {
+          const countryName = option.getAttribute("data-value");
+          countryInput.value = countryName;
+          countryDropdown.classList.remove("show");
+          highlightedIndex = -1;
+          
+          // Format contact number based on selected country
+          if (window.formatContactNumber) {
+            window.formatContactNumber(countryName);
+          }
+          
+          // Trigger validation
+          validateForm();
+          updateTicketLinks();
+        }
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Load country data first
+        await loadCountryData();
+        
+        // Populate dropdown with country data from JSON
+        populateCountryDropdown();
+
+        // Enhanced form interactions - Form validation
+        const form = document.getElementById("bootstrapForm");
+        const firstNameInput = document.getElementById("344858218");
+        const lastNameInput = document.getElementById("491468228");
+        const emailInput = document.getElementById("853228319");
+        const contactInput = document.getElementById("36020433");
+        const countryInput = document.getElementById("962797291");
+
         function validateForm() {
           const firstName = firstNameInput.value.trim();
           const lastName = lastNameInput.value.trim();
           const email = emailInput.value.trim();
           const contact = contactInput.value.trim();
-          const address = addressInput.value.trim();
+          const country = countryInput.value.trim();
 
-          // Contact validation
-          if (contact) {
-            if (!validateContact(contact)) {
-              contactError.style.display = "block";
-              contactInput.classList.add("error");
-              return false;
-            } else {
-              contactError.style.display = "none";
-              contactInput.classList.remove("error");
+          // Check gender selection
+          const genderElements = document.getElementsByName("entry.1816651679");
+          let genderSelected = false;
+          for (let i = 0; i < genderElements.length; i++) {
+            if (genderElements[i].checked) {
+              genderSelected = true;
+              break;
             }
           }
 
-          const isValid = firstName && lastName && email && email.includes("@") && validateContact(contact) && address;
-          submitBtn.disabled = !isValid;
-          submitBtn.style.opacity = isValid ? "1" : "0.6";
+          // Check stream selection
+          const streamElements = document.getElementsByName("entry.1045473638");
+          let streamSelected = false;
+          for (let i = 0; i < streamElements.length; i++) {
+            if (streamElements[i].checked) {
+              streamSelected = true;
+              break;
+            }
+          }
 
+          // Enhanced email validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const isValidEmail = email && emailRegex.test(email);
+
+          // Contact number validation (basic check for numbers)
+          const contactRegex = /^[\d+\-\s()]+$/;
+          const isValidContact = contact && contactRegex.test(contact) && contact.length >= 8;
+
+          // Collect all validation results
+          const validationResults = {
+            firstName: firstName.length >= 2,
+            lastName: lastName.length >= 2,
+            email: isValidEmail,
+            contact: isValidContact,
+            country: country.length > 0,
+            gender: genderSelected,
+            stream: streamSelected
+          };
+
+          // Update field styling based on validation (no visual feedback during typing)
+          updateFieldValidation('344858218', validationResults.firstName);
+          updateFieldValidation('491468228', validationResults.lastName);
+          updateFieldValidation('853228319', validationResults.email);
+          updateFieldValidation('36020433', validationResults.contact);
+          updateFieldValidation('962797291', validationResults.country);
+          updateRadioValidation('entry.1816651679', validationResults.gender);
+          updateRadioValidation('entry.1045473638', validationResults.stream);
+
+          // Don't show validation messages during real-time validation
+          // Messages will only be shown on form submission
+
+          // Check if all fields are valid
+          const isValid = Object.values(validationResults).every(result => result === true);
+          
+          // Update submit button state
+          const submitButton = document.querySelector('input[type="submit"]');
+          if (submitButton) {
+            // Always enable submit button so user can click and see validation errors
+            submitButton.disabled = false;
+            submitButton.style.opacity = '1';
+            submitButton.style.cursor = 'pointer';
+          }
+          
           return isValid;
         }
 
-        // Contact input validation
-        contactInput.addEventListener("input", function (e) {
-          // Remove any non-numeric characters
-          this.value = this.value.replace(/[^0-9]/g, "");
+        // Helper function to update field validation styling (no visual feedback during typing)
+        function updateFieldValidation(fieldId, isValid) {
+          const field = document.getElementById(fieldId);
+          if (field) {
+            // Remove any existing validation classes
+            field.classList.remove('valid', 'invalid');
+          }
+        }
 
-          // No max length restriction - different countries have different phone number lengths
+        // Helper function to update radio button validation styling (no visual feedback during selection)
+        function updateRadioValidation(fieldName, isValid) {
+          const radioElements = document.getElementsByName(fieldName);
+          const fieldset = radioElements.length > 0 ? radioElements[0].closest('fieldset') : null;
+          if (fieldset) {
+            // Remove any existing validation classes
+            fieldset.classList.remove('valid', 'invalid');
+          }
+        }
 
-          validateForm();
-          updateTicketLinks();
+        // Helper function to show validation messages (only show on form submission)
+        function showValidationMessage(fieldId, isValid, message) {
+          const field = document.getElementById(fieldId);
+          if (!field) return;
+          
+          // Remove existing validation messages
+          const existingMessage = field.parentNode.querySelector('.validation-message');
+          const existingSuccess = field.parentNode.querySelector('.validation-success');
+          if (existingMessage) existingMessage.remove();
+          if (existingSuccess) existingSuccess.remove();
+          
+          // Only show error messages and only during form submission validation
+          // (This function will be called differently during submission)
+        }
+
+        // Helper function to show radio button validation messages (only show on form submission)
+        function showRadioValidationMessage(fieldName, isValid, message) {
+          const radioElements = document.getElementsByName(fieldName);
+          if (radioElements.length === 0) return;
+          
+          const fieldset = radioElements[0].closest('fieldset');
+          if (!fieldset) return;
+          
+          // Remove existing validation messages
+          const existingMessage = fieldset.querySelector('.validation-message');
+          const existingSuccess = fieldset.querySelector('.validation-success');
+          if (existingMessage) existingMessage.remove();
+          if (existingSuccess) existingSuccess.remove();
+          
+          // Only show error messages during form submission validation
+          // (This function will be called differently during submission)
+        }
+
+        // Make validateForm available globally for other functions
+        window.validateForm = validateForm;
+
+        // Separate validation function for form submission that shows error messages
+        window.validateFormForSubmission = function() {
+          const firstNameInput = document.getElementById("344858218");
+          const lastNameInput = document.getElementById("491468228");
+          const emailInput = document.getElementById("853228319");
+          const contactInput = document.getElementById("36020433");
+          const countryInput = document.getElementById("962797291");
+          
+          const firstName = firstNameInput.value.trim();
+          const lastName = lastNameInput.value.trim();
+          const email = emailInput.value.trim();
+          const contact = contactInput.value.trim();
+          const country = countryInput.value.trim();
+
+          // Check gender selection
+          const genderElements = document.getElementsByName("entry.1816651679");
+          let genderSelected = false;
+          for (let i = 0; i < genderElements.length; i++) {
+            if (genderElements[i].checked) {
+              genderSelected = true;
+              break;
+            }
+          }
+
+          // Check stream selection
+          const streamElements = document.getElementsByName("entry.1045473638");
+          let streamSelected = false;
+          for (let i = 0; i < streamElements.length; i++) {
+            if (streamElements[i].checked) {
+              streamSelected = true;
+              break;
+            }
+          }
+
+          // Enhanced email validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const isValidEmail = email && emailRegex.test(email);
+
+          // Contact number validation (basic check for numbers)
+          const contactRegex = /^[\d+\-\s()]+$/;
+          const isValidContact = contact && contactRegex.test(contact) && contact.length >= 8;
+
+          // Collect all validation results
+          const validationResults = {
+            firstName: firstName.length >= 2,
+            lastName: lastName.length >= 2,
+            email: isValidEmail,
+            contact: isValidContact,
+            country: country.length > 0,
+            gender: genderSelected,
+            stream: streamSelected
+          };
+
+          // Clear any existing error messages
+          document.querySelectorAll('.validation-message, .validation-success').forEach(msg => msg.remove());
+
+          // Show error messages only for invalid fields
+          if (!validationResults.firstName) {
+            showSubmissionError('344858218', 'First name must be at least 2 characters');
+          }
+          if (!validationResults.lastName) {
+            showSubmissionError('491468228', 'Last name must be at least 2 characters');
+          }
+          if (!validationResults.email) {
+            showSubmissionError('853228319', 'Please enter a valid email address');
+          }
+          if (!validationResults.contact) {
+            showSubmissionError('36020433', 'Please enter a valid contact number (at least 8 digits)');
+          }
+          if (!validationResults.country) {
+            showSubmissionError('962797291', 'Please select your country');
+          }
+          if (!validationResults.gender) {
+            showSubmissionRadioError('entry.1816651679', 'Please select your gender');
+          }
+          if (!validationResults.stream) {
+            showSubmissionRadioError('entry.1045473638', 'Please select your stream');
+          }
+
+          // Return true only if all fields are valid
+          return Object.values(validationResults).every(result => result === true);
+        };
+
+        // Helper function to show error messages during submission
+        function showSubmissionError(fieldId, message) {
+          const field = document.getElementById(fieldId);
+          if (!field) return;
+          
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'validation-message';
+          messageDiv.textContent = message;
+          messageDiv.style.cssText = `
+            color: #ef4444 !important;
+            font-size: 0.8rem !important;
+            margin-top: 0.25rem !important;
+            padding: 0.5rem !important;
+            display: block !important;
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-radius: 4px !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+          `;
+          field.parentNode.appendChild(messageDiv);
+        }
+
+        // Helper function to show radio error messages during submission
+        function showSubmissionRadioError(fieldName, message) {
+          const radioElements = document.getElementsByName(fieldName);
+          if (radioElements.length === 0) return;
+          
+          const fieldset = radioElements[0].closest('fieldset');
+          if (!fieldset) return;
+          
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'validation-message';
+          messageDiv.textContent = message;
+          messageDiv.style.cssText = `
+            color: #ef4444 !important;
+            font-size: 0.8rem !important;
+            margin-top: 0.25rem !important;
+            padding: 0.5rem !important;
+            display: block !important;
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-radius: 4px !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+          `;
+          fieldset.appendChild(messageDiv);
+        }
+
+        // Add input event listeners for real-time validation
+        [firstNameInput, lastNameInput, emailInput, contactInput, countryInput].forEach(input => {
+          input.addEventListener("input", validateForm);
+          input.addEventListener("blur", validateForm);
         });
 
-        // Country code change validation
-        countryCodeSelect.addEventListener("change", function (e) {
-          validateForm();
-          updateTicketLinks();
-        });
-        firstNameInput.addEventListener("input", function () {
-          validateForm();
-          updateTicketLinks();
+        // Add change event listeners for radio buttons (gender and stream)
+        const genderElements = document.getElementsByName("entry.1816651679");
+        const streamElements = document.getElementsByName("entry.1045473638");
+        
+        [...genderElements, ...streamElements].forEach(radio => {
+          radio.addEventListener("change", validateForm);
         });
 
-        lastNameInput.addEventListener("input", function () {
-          validateForm();
-          updateTicketLinks();
+        // Clean contact input as user types (remove non-numeric characters except +)
+        contactInput.addEventListener("input", function() {
+          let value = this.value.replace(/[^\d+]/g, "");
+          
+          // If it starts with +, keep it, otherwise remove any + in the middle
+          if (!value.startsWith("+")) {
+            value = value.replace(/\+/g, "");
+          }
+          
+          this.value = value;
         });
-        emailInput.addEventListener("input", function () {
-          validateForm();
-          updateTicketLinks();
-        });
-        contactInput.addEventListener("input", function () {
-          validateForm();
-          updateTicketLinks();
-        });
-        addressInput.addEventListener("input", function () {
-          validateForm();
-          updateTicketLinks();
-        });
-        // Initial validation and link update
+
+        // Format contact number function (silent formatting)
+        window.formatContactNumber = function(countryName) {
+          const contactInput = document.getElementById("36020433");
+          let contactValue = contactInput.value.trim();
+          
+          if (!contactValue) return;
+          
+          const countryConfig = countryCodeMap[countryName];
+          
+          if (countryConfig) {
+            // Remove existing country codes first
+            contactValue = contactValue.replace(/^\+\d{1,4}/, "");
+            
+            // Remove the specified prefix if it exists
+            if (countryConfig.removePrefix && contactValue.startsWith(countryConfig.removePrefix)) {
+              contactValue = contactValue.substring(countryConfig.removePrefix.length);
+            }
+            
+            // Remove any non-numeric characters
+            contactValue = contactValue.replace(/\D/g, "");
+            
+            // Format with country code (silent formatting)
+            if (contactValue.length >= countryConfig.minLength && contactValue.length <= countryConfig.maxLength) {
+              contactInput.value = countryConfig.code + contactValue;
+            }
+          } else {
+            // For countries not in the map, just clean the number
+            contactValue = contactValue.replace(/\D/g, "");
+            if (contactValue.length > 0) {
+              contactInput.value = contactValue;
+            }
+          }
+        };
+
+        // Initial validation
         validateForm();
-        updateTicketLinks();
+        
+        // Keep submit button enabled so user can click and see validation errors
+        const submitButton = document.querySelector('input[type="submit"]');
+        if (submitButton) {
+          submitButton.disabled = false;
+        }
       });
-      function updateTicketLinks() {
-        // Get form values - use submitted data if form is reset, otherwise current input values
-        let firstName, lastName, email, contact, countryCode, address;
 
-        if (submittedFormData && Object.keys(submittedFormData).length > 0) {
-          // Use stored submitted data (contact already combined)
+      function updateTicketLinks() {
+        // Use submitted form data if available, otherwise get current form values
+        let firstName, lastName, email, contact, country, gender = "", stream = "";
+        
+        if (Object.keys(submittedFormData).length > 0) {
+          // Use stored submitted data
           firstName = submittedFormData.firstName;
           lastName = submittedFormData.lastName;
           email = submittedFormData.email;
-          contact = submittedFormData.contact; // This is already the full phone number
-          countryCode = submittedFormData.countryCode;
-          address = submittedFormData.address;
+          contact = submittedFormData.contact;
+          country = submittedFormData.country;
+          gender = submittedFormData.gender || "";
+          stream = submittedFormData.stream || "";
         } else {
-          // Use current input values and combine them
-          firstName = document.getElementById("firstNameInput").value.trim();
-          lastName = document.getElementById("lastNameInput").value.trim();
-          email = document.getElementById("emailInput").value.trim();
-          const phoneNumber = document.getElementById("contactInput").value.trim();
-          countryCode = document.getElementById("countryCodeSelect").value;
-          contact = countryCode + phoneNumber; // Combine for current values
-          address = document.getElementById("addressInput").value.trim();
+          // Get current form values
+          firstName = document.getElementById("344858218").value.trim();
+          lastName = document.getElementById("491468228").value.trim();
+          email = document.getElementById("853228319").value.trim();
+          contact = document.getElementById("36020433").value.trim();
+          country = document.getElementById("962797291").value.trim();
+
+          // Get gender
+          const genderElements = document.getElementsByName("entry.1816651679");
+          for (let i = 0; i < genderElements.length; i++) {
+            if (genderElements[i].checked) {
+              gender = genderElements[i].value;
+              break;
+            }
+          }
+
+          // Get stream
+          const streamElements = document.getElementsByName("entry.1045473638");
+          for (let i = 0; i < streamElements.length; i++) {
+            if (streamElements[i].checked) {
+              stream = streamElements[i].value;
+              break;
+            }
+          }
         }
 
         // Create data object
@@ -981,15 +674,16 @@
           firstName: firstName || "",
           lastName: lastName || "",
           email: email || "",
-          contact: contact || "", // This is the full phone number
-          countryCode: countryCode || "+94",
-          fullPhoneNumber: contact, // Same as contact now
-          address: address || "",
+          contact: contact || "",
+          country: country || "",
+          gender: gender || "",
+          stream: stream || "",
           timestamp: new Date().toISOString(),
         };
 
         // Convert to JSON string
-        const jsonString = JSON.stringify(userData); // Encode the data using base64 (simpler alternative to encryption)
+        const jsonString = JSON.stringify(userData);
+        // Encode the data using base64
         const encoded = btoa(jsonString);
 
         // Create URL with encoded data
@@ -1012,39 +706,57 @@
       function showForm() {
         document.getElementById("ticketSection").style.display = "none";
         document.getElementById("formSection").style.display = "block";
-      } // Store form data globally for use after form reset
+      }
+
+      // Store form data globally for use after form reset
       let submittedFormData = {};
 
       // Enhanced form submission
       $("#bootstrapForm").submit(function (event) {
         event.preventDefault();
 
-        const submitBtn = document.getElementById("submitBtn");
-        const submitText = document.getElementById("submitText");
-        const successMessage = document.getElementById("successMessage");
+        // Validate form before submission (this will show error messages)
+        if (!window.validateFormForSubmission()) {
+          return false;
+        }
 
-        // Combine country code and phone number before submission
-        const countryCode = document.getElementById("countryCodeSelect").value;
-        const phoneNumber = document.getElementById("contactInput").value.trim();
-        const fullPhoneNumber = countryCode + phoneNumber;
+        // Format contact number with country code before submission
+        const countryInput = document.getElementById("962797291");
+        const contactInput = document.getElementById("36020433");
+        const selectedCountry = countryInput.value.trim();
+        
+        if (selectedCountry && window.formatContactNumber) {
+          window.formatContactNumber(selectedCountry);
+        }
 
-        // Update the contact input value to include country code for form submission
-        document.getElementById("contactInput").value = fullPhoneNumber;
+        // Store complete form data before submission (including gender and stream)
+        const genderElements = document.getElementsByName("entry.1816651679");
+        let gender = "";
+        for (let i = 0; i < genderElements.length; i++) {
+          if (genderElements[i].checked) {
+            gender = genderElements[i].value;
+            break;
+          }
+        }
 
-        // Store form data before submission (keep separate for data processing)
+        const streamElements = document.getElementsByName("entry.1045473638");
+        let stream = "";
+        for (let i = 0; i < streamElements.length; i++) {
+          if (streamElements[i].checked) {
+            stream = streamElements[i].value;
+            break;
+          }
+        }
+
         submittedFormData = {
-          firstName: document.getElementById("firstNameInput").value.trim(),
-          lastName: document.getElementById("lastNameInput").value.trim(),
-          email: document.getElementById("emailInput").value.trim(),
-          contact: fullPhoneNumber, // Store the combined phone number
-          countryCode: countryCode,
-          address: document.getElementById("addressInput").value.trim(),
+          firstName: document.getElementById("344858218").value.trim(),
+          lastName: document.getElementById("491468228").value.trim(),
+          email: document.getElementById("853228319").value.trim(),
+          contact: document.getElementById("36020433").value.trim(),
+          country: document.getElementById("962797291").value.trim(),
+          gender: gender,
+          stream: stream
         };
-
-        // Show loading state
-        submitBtn.classList.add("loading");
-        submitText.textContent = "Submitting...";
-        submitBtn.disabled = true;
 
         var extraData = {};
 
@@ -1052,24 +764,9 @@
           data: extraData,
           dataType: "jsonp",
           error: function () {
-            // Show success message
-            successMessage.style.display = "block";
-            // Reset form
+            // Reset form and redirect directly to ticket section without success message
             $("#bootstrapForm")[0].reset();
-
-            // Reset the country code to default
-            document.getElementById("countryCodeSelect").value = "+91";
-
-            // Reset button state
-            submitBtn.classList.remove("loading");
-            submitText.textContent = "Complete Registration";
-            submitBtn.disabled = false;
-
-            // Show ticket section after delay
-            setTimeout(() => {
-              showTicket();
-              successMessage.style.display = "none";
-            }, 2000);
+            showTicket();
           },
         });
       });

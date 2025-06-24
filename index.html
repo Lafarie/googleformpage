@@ -11,93 +11,76 @@
   </head>
   <body>
     <div class="container">
-      <div class="banner-image"></div>
       <!-- Form Section -->
       <div id="formSection" class="form-container">
+         <img src="banner2.jpg" alt="Alumni Reunion Banner" />
         <form action="https://docs.google.com/forms/d/e/1FAIpQLSdkXqhlRr7QlOUxROzVLp3k3mSlhjCwX-KfWmb1q9W8cywVvw/formResponse" target="_self" id="bootstrapForm" method="POST">
-          <fieldset>
-            <h2>Alumni Registration<br><small>Join us for our 25th Anniversary Reunion celebration</small></h2>
+          <fieldset class="form-header">
+            <h2 class="form-title">Alumni Registration</h2>
+            <p class="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
           </fieldset>
 
           <!-- Field type: "short" id: "299599161" -->
           <fieldset>
-            <legend for="299599161">First Name</legend>
-            <div class="form-group">
-              <input id="344858218" type="text" name="entry.344858218" class="form-control">
-            </div>
+            <label class="form-label" for="344858218">First Name*</label>
+            <input id="344858218" type="text" name="entry.344858218" placeholder="Enter your first name" required>
           </fieldset>
 
           <!-- Field type: "short" id: "671392012" -->
           <fieldset>
-            <legend for="671392012">Last Name</legend>
-            <div class="form-group">
-              <input id="491468228" type="text" name="entry.491468228" class="form-control">
-            </div>
+            <label class="form-label" for="491468228">Last Name*</label>
+            <input id="491468228" type="text" name="entry.491468228" placeholder="Enter your last name" required>
           </fieldset>
 
           <!-- Field type: "choices" id: "343808956" -->
           <fieldset>
-            <legend for="343808956">Gender</legend>
-            <div class="form-group">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="entry.1816651679" value="Male">
-                  Male
-                </label>
+            <label class="form-label">Gender*</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" name="entry.1816651679" value="Male" id="gender-male">
+                <label for="gender-male">Male</label>
               </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="entry.1816651679" value="Female">
-                  Female
-                </label>
+              <div class="radio-option">
+                <input type="radio" name="entry.1816651679" value="Female" id="gender-female">
+                <label for="gender-female">Female</label>
               </div>
             </div>
           </fieldset>
 
           <!-- Field type: "short" id: "1318576916" -->
           <fieldset>
-            <legend for="1318576916">Email Address</legend>
-            <div class="form-group">
-              <input id="853228319" type="text" name="entry.853228319" class="form-control">
-            </div>
+            <label class="form-label" for="853228319">Email Address*</label>
+            <input id="853228319" type="email" name="entry.853228319" placeholder="Enter your email address" required>
           </fieldset>
 
           <!-- Field type: "short" id: "775017245" -->
           <fieldset>
-            <legend for="775017245">Contact</legend>
-            <div class="form-group">
-              <input id="36020433" type="text" name="entry.36020433" class="form-control">
-            </div>
+            <label class="form-label" for="36020433">Contact Number*</label>
+            <input id="36020433" type="tel" name="entry.36020433" placeholder="Enter your contact number" required>
           </fieldset>
 
           <!-- Field type: "short" id: "1281073730" -->
           <fieldset>
-            <legend for="1281073730">Country</legend>
-            <div class="form-group">
-              <div class="country-dropdown-container">
-                <input id="962797291" type="text" name="entry.962797291" class="form-control country-input" placeholder="Type to search countries..." autocomplete="off">
-                <div class="country-dropdown" id="countryDropdown">
-                  <!-- Countries will be loaded dynamically from country.json -->
-                </div>
+            <label class="form-label" for="962797291">Country*</label>
+            <div class="country-dropdown-container">
+              <input id="962797291" type="text" name="entry.962797291" class="country-input" placeholder="Enter your country" autocomplete="off" required>
+              <div class="country-dropdown" id="countryDropdown">
+                <!-- Countries will be loaded dynamically from country.json -->
               </div>
             </div>
           </fieldset>
 
           <!-- Field type: "choices" id: "1583862723" -->
           <fieldset>
-            <legend for="1583862723">Stream</legend>
-            <div class="form-group">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="entry.1045473638" value="Physical Science">
-                  Physical Science
-                </label>
+            <label class="form-label">Academic Stream*</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" name="entry.1045473638" value="Physical Science" id="stream-physical">
+                <label for="stream-physical">Physical Science</label>
               </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="entry.1045473638" value="Bio Science">
-                  Bio Science
-                </label>
+              <div class="radio-option">
+                <input type="radio" name="entry.1045473638" value="Bio Science" id="stream-bio">
+                <label for="stream-bio">Bio Science</label>
               </div>
             </div>
           </fieldset>
@@ -112,14 +95,14 @@
           -->
           <input type="hidden" name="pageHistory" value="0">
 
-          <input class="btn btn-primary" type="submit" value="Submit">
+          <input class="submit-btn" type="submit" value="🎓 Register for Alumni Reunion">
         </form>
 
         <div class="buy-section">
-          <p class="buy-section-title">Ready to join the celebration?</p>
+          <p class="buy-section-title">Ready to Join the Celebration?</p>
           <a href="https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets" class="buy-btn" target="_blank" rel="noopener noreferrer">
             <span class="buy-btn-icon">🎫</span>
-            Purchase Tickets
+            Purchase Tickets Now
           </a>
         </div>
 

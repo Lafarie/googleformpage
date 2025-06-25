@@ -1,0 +1,26 @@
+{
+  "name": "University of Colombo Alumni 25th Anniversary Reunion",
+  "short_name": "UOC Alumni Reunion",
+  "description": "Join us for the University of Colombo Alumni 25th Anniversary Reunion celebration",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#534088",
+  "background_color": "#000000",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary",
+  "categories": ["education", "events"],
+  "lang": "en",
+  "dir": "ltr"
+} 

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://uocalumni.netlify.app/sitemap.xml
+
+# Disallow any unnecessary directories (if any)
+# Disallow: /api/
+# Disallow: /_next/
+
+# Allow important pages
+Allow: /
+Allow: /banner2.jpg
+Allow: /bg.png
+
+# Crawl delay (optional)
+Crawl-delay: 1 

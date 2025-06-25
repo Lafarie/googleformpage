@@ -403,20 +403,23 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <div className="max-w-2xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
-        <div className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent">
-            Registration Complete!
-          </h1>
-          <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
-            Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
-          </p>
+      <main className="max-w-2xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
+        <section className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10" role="main" aria-label="Registration Confirmation">
+          <header>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent">
+              Registration Complete!
+            </h1>
+            <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
+              Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
+            </p>
+          </header>
 
           <a 
             href={getTicketUrl()} 
             className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#534088] text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto" 
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="Purchase tickets for University of Colombo Alumni 25th Anniversary Reunion (opens in new tab)"
           >
             Purchase Your Tickets Now
           </a>
@@ -427,32 +430,38 @@ export default function AlumniForm() {
           >
             ← Back to Registration Form
           </button> */}
-        </div>
-      </div>
+        </section>
+      </main>
     )
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10 ">
-      <div className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
-        <Image 
-          src="/banner2.jpg" 
-          alt="Alumni Reunion Banner" 
-          width={800} 
-          height={300} 
-          priority 
-          className="w-full rounded-t-2xl sm:rounded-t-3xl mb-1 shadow-lg"
-        />
+    <main className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10">
+      <article className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
+        <header>
+          <Image 
+            src="/banner2.jpg" 
+            alt="University of Colombo Alumni 25th Anniversary Reunion - Registration Banner featuring celebration graphics and event details" 
+            width={800} 
+            height={300} 
+            priority 
+            className="w-full rounded-t-2xl sm:rounded-t-3xl mb-1 shadow-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={90}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+          />
+        </header>
         
-        <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 flex flex-col gap-0">
-          <div className="text-center mb-6 sm:mb-8 max-w-md mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 flex flex-col gap-0" role="form" aria-label="Alumni Registration Form">
+          <section className="text-center mb-6 sm:mb-8 max-w-md mx-auto">
+            <h1 className="text-2xl sm:text-3xl font-semibold mb-2 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
               Alumni Registration
-            </h2>
+            </h1>
             <p className="text-sm text-gray-400 font-normal px-2">
               Join us for our 25th Anniversary Reunion celebration
             </p>
-          </div>
+          </section>
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="firstName">
@@ -718,18 +727,19 @@ export default function AlumniForm() {
 
         <hr className="mx-4 sm:mx-5" />
 
-        <div className="mt-4 text-center p-1 rounded-2xl mx-4 sm:mx-8 mb-6 sm:mb-8">
-          <p className="text-sm sm:text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
+        <section className="mt-4 text-center p-1 rounded-2xl mx-4 sm:mx-8 mb-6 sm:mb-8" aria-label="Ticket Purchase Section">
+          <h2 className="text-sm sm:text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</h2>
           <a 
             href={getTicketUrl()} 
             className="flex items-center bg-[#534088] font-bold justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="Purchase tickets for Alumni 25th Anniversary Reunion (opens in new tab)"
           >
             Purchase Tickets Now
           </a>
-        </div>
-      </div>
-    </div>
+        </section>
+      </article>
+    </main>
   )
 } 

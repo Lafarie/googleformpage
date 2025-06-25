@@ -406,7 +406,7 @@ export default function AlumniForm() {
       <div className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10">
         <div className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
-            🎉 Registration Complete!
+            Registration Complete!
           </h1>
           <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
             Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
@@ -446,7 +446,7 @@ export default function AlumniForm() {
         
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 flex flex-col gap-0">
           <div className="text-center mb-6 sm:mb-8 max-w-md mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
               Alumni Registration
             </h2>
             <p className="text-sm text-gray-400 font-normal px-2">

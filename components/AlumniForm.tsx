@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import countryData from '@/data/country.json'
+import { tree } from 'next/dist/build/templates/app-page'
 
 interface CountryConfig {
   code: string
@@ -124,7 +125,7 @@ export default function AlumniForm() {
     setShowDropdown(true)
     
     // Re-enable sync when user types in country field
-    setAllowCountrySync(true)
+    setAllowCountrySync(false)
     
     if (validationErrors.country) {
       setValidationErrors(prev => ({ ...prev, country: '' }))
@@ -175,7 +176,7 @@ export default function AlumniForm() {
       }
       
       // Re-enable sync since user selected from country field
-      setAllowCountrySync(true)
+      setAllowCountrySync(false)
     }
   }
 
@@ -195,6 +196,7 @@ export default function AlumniForm() {
       flag: config.flag,
       country: country
     })
+    setAllowCountrySync(false)
     setShowCountryCodeDropdown(false)
     setHighlightedCountryCodeIndex(-1)
     
@@ -206,10 +208,10 @@ export default function AlumniForm() {
     }
     
     // Re-format the existing contact number with the new country code
-    if (contact) {
-      const fullNumber = config.code + contact
-      setFormData(prev => ({ ...prev, contact: fullNumber }))
-    }
+    // if (contact) {
+    //   const fullNumber = config.code + contact
+    //   setFormData(prev => ({ ...prev, contact: fullNumber }))
+    // }
   }
 
   const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,13 +220,16 @@ export default function AlumniForm() {
     // Get the selected country's configuration
     const countryConfig = countryData[selectedCountryCode.country as keyof typeof countryData] as CountryConfig
     
-    // Remove the prefix if it exists and the country has a removePrefix setting
+
+    // Remove real time the prefix if it exists and the country has a removePrefix setting
+    
+    
+    setContact(value)
+
     if (countryConfig && countryConfig.removePrefix && value.startsWith(countryConfig.removePrefix)) {
       value = value.substring(countryConfig.removePrefix.length)
     }
-    
-    setContact(value)
-    
+
     // Update the form data with the full number including country code
     const fullNumber = selectedCountryCode.code + value
     setFormData(prev => ({ ...prev, contact: fullNumber }))
@@ -234,7 +239,7 @@ export default function AlumniForm() {
     }
   }
 
-  const formatContactNumber = (countryName: string, contactValue: string, showVisualFeedback = false): boolean => {
+  const formatContactNumber = (countryName: string, contactValue: string, showVisualFeedback = false): Boolean => {
     if (!contactValue) return false
     
     const countryConfig = countryData[countryName as keyof typeof countryData] as CountryConfig
@@ -248,10 +253,12 @@ export default function AlumniForm() {
       
       cleanedContact = cleanedContact.replace(/\D/g, '')
       
+
       if (cleanedContact.length >= countryConfig.minLength && cleanedContact.length <= countryConfig.maxLength) {
         const formattedNumber = countryConfig.code + cleanedContact
         setFormData(prev => ({ ...prev, contact: formattedNumber }))
-        
+        setContact(formattedNumber)
+        console.log(formattedNumber)
         if (showVisualFeedback && contactInputRef.current) {
           contactInputRef.current.classList.add('animate-pulse')
           setTimeout(() => {
@@ -259,7 +266,7 @@ export default function AlumniForm() {
           }, 1500)
         }
         
-        return true
+        return true;
       }
     }
     
@@ -311,7 +318,7 @@ export default function AlumniForm() {
       country: userData.country,
       gender: userData.gender,
       stream: userData.stream,
-      timestamp: new Date().toISOString(),
+      code: selectedCountryCode.code
     }
     
     const jsonString = JSON.stringify(dataToEncode)
@@ -332,7 +339,7 @@ export default function AlumniForm() {
     try {
       setSubmitButtonText('🚀 Submitting Registration...')
       setSubmittedData(formData)
-      formatContactNumber(selectedCountryCode.country, contact, true)
+      
       
       const formDataToSubmit = new FormData()
       formDataToSubmit.append('entry.344858218', formData.firstName)
@@ -381,7 +388,18 @@ export default function AlumniForm() {
     setIsSubmitting(false)
   }
 
-  const ticketUrl = submittedData ? generateTicketUrl(submittedData) : generateTicketUrl(formData)
+  // Generate ticket URL - use a fallback URL to prevent hydration issues
+  const getTicketUrl = () => {
+    try {
+      const dataForUrl = submittedData || formData
+      if (dataForUrl.firstName || dataForUrl.lastName || dataForUrl.email) {
+        return generateTicketUrl(dataForUrl)
+      }
+    } catch (error) {
+      console.error('Error generating ticket URL:', error)
+    }
+    return "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
+  }
 
   if (showTicketSection) {
     return (
@@ -395,7 +413,7 @@ export default function AlumniForm() {
           </p>
 
           <a 
-            href={ticketUrl} 
+            href={getTicketUrl()} 
             className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
@@ -427,9 +445,9 @@ export default function AlumniForm() {
           className="w-full rounded-t-3xl mb-8 shadow-lg"
         />
         
-        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-5">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-0">
+          <div className="text-center mb-8 max-w-md mx-auto">
+            <h2 className="text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
               Alumni Registration
             </h2>
             <p className="text-sm text-gray-400 font-normal">
@@ -437,7 +455,7 @@ export default function AlumniForm() {
             </p>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="firstName">
               First Name*
             </label>
@@ -458,7 +476,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="lastName">
               Last Name*
             </label>
@@ -479,7 +497,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2">Gender*</label>
             <div className="flex flex-row gap-5 my-3 items-center">
               <div className="flex items-center gap-2">
@@ -514,7 +532,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
               Email Address*
             </label>
@@ -535,7 +553,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
               Where you from? Country*
             </label>
@@ -579,7 +597,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
               Contact Number*
             </label>
@@ -649,7 +667,7 @@ export default function AlumniForm() {
 
           
 
-          <div className="mb-6">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>
             <div className="flex flex-row gap-5 my-3 items-center">
               <div className="flex items-center gap-2">
@@ -696,7 +714,7 @@ export default function AlumniForm() {
         <div className="mt-8 text-center p-6 bg-white/2 rounded-2xl border border-white/5 mx-8 mb-8">
           <p className="text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
           <a 
-            href={ticketUrl} 
+            href={getTicketUrl()} 
             className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"

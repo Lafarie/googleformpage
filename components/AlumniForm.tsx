@@ -337,7 +337,7 @@ export default function AlumniForm() {
     setIsSubmitting(true)
     
     try {
-      setSubmitButtonText('🚀 Submitting Registration...')
+      setSubmitButtonText('Submitting Registration...')
       setSubmittedData(formData)
       
       
@@ -609,9 +609,10 @@ export default function AlumniForm() {
                   onClick={() => setShowCountryCodeDropdown(!showCountryCodeDropdown)}
                   className="flex items-center justify-between w-full sm:w-auto gap-2 p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{selectedCountryCode.flag}</span>
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <span className="text-base mb-1">{selectedCountryCode.flag}</span>
                     <span className="font-mono">{selectedCountryCode.code}</span>
+                    <span className="sm:hidden text-md text-gray-300 truncate tracking-widest">{selectedCountryCode.country}</span>
                   </div>
                   <span className="text-gray-400">▼</span>
                 </button>

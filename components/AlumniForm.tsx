@@ -33,7 +33,7 @@ export default function AlumniForm() {
     lastName: '',
     email: '',
     contact: '',
-    country: '',
+    country: 'Sri Lanka',
     gender: '',
     stream: ''
   })
@@ -403,9 +403,9 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <div className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10">
+      <div className="max-w-2xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
         <div className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent">
             Registration Complete!
           </h1>
           <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
@@ -414,19 +414,19 @@ export default function AlumniForm() {
 
           <a 
             href={getTicketUrl()} 
-            className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto" 
+            className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#534088] text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto" 
             target="_blank" 
             rel="noopener noreferrer"
           >
             Purchase Your Tickets Now
           </a>
-          <br />
+          {/* <br />
           <button 
             className="inline-block mt-4 sm:mt-5 text-gray-400 text-sm transition-colors duration-300 cursor-pointer hover:text-yellow-400 bg-transparent border-none"
             onClick={handleBackToForm}
           >
             ← Back to Registration Form
-          </button>
+          </button> */}
         </div>
       </div>
     )
@@ -554,7 +554,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
-              Where you from? Country <span className="text-red-500">*</span>
+              Country <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -708,7 +708,7 @@ export default function AlumniForm() {
           </div>
 
           <button
-            className="w-full p-3 sm:p-4 bg-[#534088] bg-gradient-to-r from-[#34088] to-purple-500 text-white border-none rounded-xl text-sm sm:text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full p-3 sm:p-4 bg-[#534088] bg-gradient-to-r from-[#5534088] to-purple-500 text-white border-none rounded-xl text-sm sm:text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             type="submit"
             disabled={isSubmitting}
           >
@@ -722,7 +722,7 @@ export default function AlumniForm() {
           <p className="text-sm sm:text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
           <a 
             href={getTicketUrl()} 
-            className="flex items-center font-bold justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            className="flex items-center bg-[#534088] font-bold justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
           >

@@ -323,7 +323,8 @@ export default function AlumniForm() {
     
     const jsonString = JSON.stringify(dataToEncode)
     const encoded = btoa(jsonString)
-    const baseUrl = "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
+    // const baseUrl = "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
+    const baseUrl = "https://appigo-mall.hsenidmobile.com/JPNENT/products/entry-pass"
     return `${baseUrl}?data=${encodeURIComponent(encoded)}`
   }
 
@@ -398,7 +399,8 @@ export default function AlumniForm() {
     } catch (error) {
       console.error('Error generating ticket URL:', error)
     }
-    return "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
+    // return "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
+    return "https://appigo-mall.hsenidmobile.com/JPNENT/products/entry-pass"
   }
 
   if (showTicketSection) {

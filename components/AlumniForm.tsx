@@ -403,18 +403,18 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <div className="max-w-2xl mx-auto p-5 relative z-10">
-        <div className="text-center bg-black/70 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-white/10">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+      <div className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10">
+        <div className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
             🎉 Registration Complete!
           </h1>
-          <p className="text-base text-gray-300 mb-8 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
             Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
           </p>
 
           <a 
             href={getTicketUrl()} 
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto" 
             target="_blank" 
             rel="noopener noreferrer"
           >
@@ -423,7 +423,7 @@ export default function AlumniForm() {
           </a>
           <br />
           <button 
-            className="inline-block mt-5 text-gray-400 text-sm transition-colors duration-300 cursor-pointer hover:text-yellow-400 bg-transparent border-none"
+            className="inline-block mt-4 sm:mt-5 text-gray-400 text-sm transition-colors duration-300 cursor-pointer hover:text-yellow-400 bg-transparent border-none"
             onClick={handleBackToForm}
           >
             ← Back to Registration Form
@@ -434,23 +434,23 @@ export default function AlumniForm() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-5 relative z-10">
-      <div className="bg-black/70 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/10">
+    <div className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10 ">
+      <div className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
         <Image 
           src="/banner2.jpg" 
           alt="Alumni Reunion Banner" 
           width={800} 
           height={300} 
           priority 
-          className="w-full rounded-t-3xl mb-1 shadow-lg"
+          className="w-full rounded-t-2xl sm:rounded-t-3xl mb-1 shadow-lg"
         />
         
-        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-0">
-          <div className="text-center mb-8 max-w-md mx-auto">
-            <h2 className="text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 flex flex-col gap-0">
+          <div className="text-center mb-6 sm:mb-8 max-w-md mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent text-[#B98C53]">
               Alumni Registration
             </h2>
-            <p className="text-sm text-gray-400 font-normal">
+            <p className="text-sm text-gray-400 font-normal px-2">
               Join us for our 25th Anniversary Reunion celebration
             </p>
           </div>
@@ -499,7 +499,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Gender*</label>
-            <div className="flex flex-row gap-5 my-3 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -601,22 +601,24 @@ export default function AlumniForm() {
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
               Contact Number*
             </label>
-            <div className="flex gap-2">
-              <div className="relative">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="relative w-full sm:w-auto">
                 <button
                   ref={countryCodeButtonRef}
                   type="button"
                   onClick={() => setShowCountryCodeDropdown(!showCountryCodeDropdown)}
-                  className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
+                  className="flex items-center justify-between w-full sm:w-auto gap-2 p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
                 >
-                  <span className="text-base">{selectedCountryCode.flag}</span>
-                  <span className="font-mono">{selectedCountryCode.code}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">{selectedCountryCode.flag}</span>
+                    <span className="font-mono">{selectedCountryCode.code}</span>
+                  </div>
                   <span className="text-gray-400">▼</span>
                 </button>
                 
                 <div
                   ref={countryCodeDropdownRef}
-                  className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showCountryCodeDropdown ? 'block' : 'hidden'} min-w-[300px]`}
+                  className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showCountryCodeDropdown ? 'block' : 'hidden'} w-full sm:min-w-[300px]`}
                 >
                   <div className="p-2">
                     <input
@@ -670,7 +672,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>
-            <div className="flex flex-row gap-5 my-3 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -706,7 +708,7 @@ export default function AlumniForm() {
           </div>
 
           <button
-            className="w-full p-3 bg-[#534088] bg-gradient-to-r from-[#34088] to-purple-500 text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full p-3 sm:p-4 bg-[#534088] bg-gradient-to-r from-[#34088] to-purple-500 text-white border-none rounded-xl text-sm sm:text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             type="submit"
             disabled={isSubmitting}
           >
@@ -714,13 +716,13 @@ export default function AlumniForm() {
           </button>
         </form>
 
-        <hr className="mx-5" />
+        <hr className="mx-4 sm:mx-5" />
 
-        <div className="mt-4 text-center p-1 rounded-2xl mx-8 mb-8">
-          <p className="text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
+        <div className="mt-4 text-center p-1 rounded-2xl mx-4 sm:mx-8 mb-6 sm:mb-8">
+          <p className="text-sm sm:text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
           <a 
             href={getTicketUrl()} 
-            className="flex items-center font-bold justify-center w-full gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            className="flex items-center font-bold justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
           >

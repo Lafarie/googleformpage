@@ -456,7 +456,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="firstName">
-              First Name*
+              First Name <span className="text-red-500">*</span>
             </label>
             <input
               id="firstName"
@@ -477,7 +477,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="lastName">
-              Last Name*
+              Last Name <span className="text-red-500">*</span>
             </label>
             <input
               id="lastName"
@@ -497,7 +497,7 @@ export default function AlumniForm() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-200 mb-2">Gender*</label>
+            <label className="block text-sm font-medium text-gray-200 mb-2">Gender <span className="text-red-500">*</span></label>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input
@@ -533,7 +533,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
-              Email Address*
+              Email Address <span className="text-red-500">*</span>
             </label>
             <input
               id="email"
@@ -554,7 +554,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
-              Where you from? Country*
+              Where you from? Country <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -598,7 +598,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
-              Contact Number*
+              Contact Number <span className="text-red-500">*</span>
             </label>
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="relative w-full sm:w-auto">
@@ -671,7 +671,7 @@ export default function AlumniForm() {
           
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>
+            <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream <span className="text-red-500">*</span></label>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input

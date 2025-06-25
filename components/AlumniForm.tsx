@@ -39,21 +39,33 @@ export default function AlumniForm() {
 
   const [showTicketSection, setShowTicketSection] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false)
   const [filteredCountries, setFilteredCountries] = useState<string[]>([])
+  const [filteredCountryCodeList, setFilteredCountryCodeList] = useState<string[]>([])
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const [highlightedCountryCodeIndex, setHighlightedCountryCodeIndex] = useState(-1)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitButtonText, setSubmitButtonText] = useState('Register for Alumni Reunion')
   const [submittedData, setSubmittedData] = useState<FormData | null>(null)
+  const [contact, setContact] = useState('')
+  const [selectedCountryCode, setSelectedCountryCode] = useState<{code: string, flag: string, country: string}>({
+    code: '+94',
+    flag: '🇱🇰',
+    country: 'Sri Lanka'
+  })
 
   const countryInputRef = useRef<HTMLInputElement>(null)
   const contactInputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const countryCodeDropdownRef = useRef<HTMLDivElement>(null)
+  const countryCodeButtonRef = useRef<HTMLButtonElement>(null)
 
   const countries = Object.keys(countryData)
 
   useEffect(() => {
     setFilteredCountries(countries)
+    setFilteredCountryCodeList(countries)
   }, [])
 
   useEffect(() => {
@@ -65,6 +77,15 @@ export default function AlumniForm() {
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setShowDropdown(false)
+      }
+
+      if (
+        countryCodeButtonRef.current &&
+        countryCodeDropdownRef.current &&
+        !countryCodeButtonRef.current.contains(event.target as Node) &&
+        !countryCodeDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowCountryCodeDropdown(false)
       }
     }
 
@@ -135,14 +156,42 @@ export default function AlumniForm() {
     setHighlightedIndex(-1)
   }
 
+  const handleCountryCodeSearch = (searchTerm: string) => {
+    const filtered = countries.filter(country =>
+      country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (countryData[country as keyof typeof countryData] as CountryConfig).code.includes(searchTerm)
+    )
+    setFilteredCountryCodeList(filtered)
+    setHighlightedCountryCodeIndex(-1)
+  }
+
+  const selectCountryCode = (country: string) => {
+    const config = countryData[country as keyof typeof countryData] as CountryConfig
+    setSelectedCountryCode({
+      code: config.code,
+      flag: config.flag,
+      country: country
+    })
+    setShowCountryCodeDropdown(false)
+    setHighlightedCountryCodeIndex(-1)
+  }
+
   const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^\d+]/g, '')
+    let value = e.target.value.replace(/[^\d]/g, '')
     
-    if (!value.startsWith('+')) {
-      value = value.replace(/\+/g, '')
+    // Get the selected country's configuration
+    const countryConfig = countryData[selectedCountryCode.country as keyof typeof countryData] as CountryConfig
+    
+    // Remove the prefix if it exists and the country has a removePrefix setting
+    if (countryConfig && countryConfig.removePrefix && value.startsWith(countryConfig.removePrefix)) {
+      value = value.substring(countryConfig.removePrefix.length)
     }
     
-    setFormData(prev => ({ ...prev, contact: value }))
+    setContact(value)
+    
+    // Update the form data with the full number including country code
+    const fullNumber = selectedCountryCode.code + value
+    setFormData(prev => ({ ...prev, contact: fullNumber }))
     
     if (validationErrors.contact) {
       setValidationErrors(prev => ({ ...prev, contact: '' }))
@@ -168,9 +217,9 @@ export default function AlumniForm() {
         setFormData(prev => ({ ...prev, contact: formattedNumber }))
         
         if (showVisualFeedback && contactInputRef.current) {
-          contactInputRef.current.classList.add('formatting')
+          contactInputRef.current.classList.add('animate-pulse')
           setTimeout(() => {
-            contactInputRef.current?.classList.remove('formatting')
+            contactInputRef.current?.classList.remove('animate-pulse')
           }, 1500)
         }
         
@@ -197,8 +246,7 @@ export default function AlumniForm() {
       errors.email = 'Please enter a valid email address'
     }
     
-    const contactRegex = /^[\d+\-\s()]+$/
-    if (!formData.contact.trim() || !contactRegex.test(formData.contact.trim()) || formData.contact.trim().length < 8) {
+    if (!contact.trim() || contact.trim().length < 8) {
       errors.contact = 'Please enter a valid contact number (at least 8 digits)'
     }
     
@@ -246,23 +294,6 @@ export default function AlumniForm() {
     setIsSubmitting(true)
     
     try {
-      if (formData.country && formData.contact) {
-        setSubmitButtonText('📱 Formatting Contact Number...')
-        const formatSuccess = formatContactNumber(formData.country, formData.contact, true)
-        
-        if (!formatSuccess) {
-          setSubmitButtonText('❌ Invalid Contact Number')
-          setTimeout(() => {
-            setSubmitButtonText('Register for Alumni Reunion')
-            setIsSubmitting(false)
-            contactInputRef.current?.focus()
-          }, 2000)
-          return
-        }
-        
-        await new Promise(resolve => setTimeout(resolve, 1800))
-      }
-      
       setSubmitButtonText('🚀 Submitting Registration...')
       setSubmittedData(formData)
       
@@ -317,19 +348,29 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <div className="container-alumni">
-        <div className="ticket-section show">
-          <h1 className="ticket-title">🎉 Registration Complete!</h1>
-          <p className="ticket-description">
+      <div className="max-w-2xl mx-auto p-5 relative z-10">
+        <div className="text-center bg-black/70 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-white/10">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+            🎉 Registration Complete!
+          </h1>
+          <p className="text-base text-gray-300 mb-8 leading-relaxed">
             Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
           </p>
 
-          <a href={ticketUrl} className="buy-btn" target="_blank" rel="noopener noreferrer">
-            <span className="buy-btn-icon">🎫</span>
+          <a 
+            href={ticketUrl} 
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <span className="text-base">🎫</span>
             Purchase Your Tickets Now
           </a>
           <br />
-          <button className="back-link" onClick={handleBackToForm}>
+          <button 
+            className="inline-block mt-5 text-gray-400 text-sm transition-colors duration-300 cursor-pointer hover:text-yellow-400 bg-transparent border-none"
+            onClick={handleBackToForm}
+          >
             ← Back to Registration Form
           </button>
         </div>
@@ -338,18 +379,31 @@ export default function AlumniForm() {
   }
 
   return (
-    <div className="container-alumni">
-      <div className="form-container">
-        <Image src="/banner2.jpg" alt="Alumni Reunion Banner" width={800} height={300} priority />
+    <div className="max-w-2xl mx-auto p-5 relative z-10">
+      <div className="bg-black/70 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/10">
+        <Image 
+          src="/banner2.jpg" 
+          alt="Alumni Reunion Banner" 
+          width={800} 
+          height={300} 
+          priority 
+          className="w-full rounded-t-3xl mb-8 shadow-lg"
+        />
         
-        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-5 text-alumni-light">
-          <fieldset className="text-center mb-8 border-none">
-            <h2 className="form-title">Alumni Registration</h2>
-            <p className="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
-          </fieldset>
+        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-5">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-semibold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+              Alumni Registration
+            </h2>
+            <p className="text-sm text-gray-400 font-normal">
+              Join us for our 25th Anniversary Reunion celebration
+            </p>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label" htmlFor="firstName">First Name*</label>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="firstName">
+              First Name*
+            </label>
             <input
               id="firstName"
               type="text"
@@ -357,16 +411,20 @@ export default function AlumniForm() {
               value={formData.firstName}
               onChange={handleInputChange}
               placeholder="Enter your first name"
-              className="form-input"
+              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.firstName && (
-              <div className="validation-message">{validationErrors.firstName}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.firstName}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label" htmlFor="lastName">Last Name*</label>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="lastName">
+              Last Name*
+            </label>
             <input
               id="lastName"
               type="text"
@@ -374,18 +432,20 @@ export default function AlumniForm() {
               value={formData.lastName}
               onChange={handleInputChange}
               placeholder="Enter your last name"
-              className="form-input"
+              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.lastName && (
-              <div className="validation-message">{validationErrors.lastName}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.lastName}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label">Gender*</label>
-            <div className="radio-group">
-              <div className="radio-option">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2">Gender*</label>
+            <div className="flex flex-row gap-5 my-3 items-center">
+              <div className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="gender"
@@ -393,10 +453,11 @@ export default function AlumniForm() {
                   id="gender-male"
                   checked={formData.gender === 'Male'}
                   onChange={handleRadioChange}
+                  className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                 />
-                <label htmlFor="gender-male">Male</label>
+                <label htmlFor="gender-male" className="text-gray-200 cursor-pointer">Male</label>
               </div>
-              <div className="radio-option">
+              <div className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="gender"
@@ -404,17 +465,22 @@ export default function AlumniForm() {
                   id="gender-female"
                   checked={formData.gender === 'Female'}
                   onChange={handleRadioChange}
+                  className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                 />
-                <label htmlFor="gender-female">Female</label>
+                <label htmlFor="gender-female" className="text-gray-200 cursor-pointer">Female</label>
               </div>
             </div>
             {validationErrors.gender && (
-              <div className="validation-message">{validationErrors.gender}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.gender}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label" htmlFor="email">Email Address*</label>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
+              Email Address*
+            </label>
             <input
               id="email"
               type="email"
@@ -422,42 +488,95 @@ export default function AlumniForm() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Enter your email address"
-              className="form-input"
+              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.email && (
-              <div className="validation-message">{validationErrors.email}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.email}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label" htmlFor="contact">Contact Number*</label>
-            <input
-              ref={contactInputRef}
-              id="contact"
-              type="tel"
-              name="contact"
-              value={formData.contact}
-              onChange={handleContactInputChange}
-              placeholder="Enter your contact number (will be formatted with country code)"
-              className="form-input"
-              required
-            />
-            <small className="form-hint">Number will be automatically formatted with your country code when you submit</small>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
+              Contact Number*
+            </label>
+            <div className="flex gap-2">
+              <div className="relative">
+                <button
+                  ref={countryCodeButtonRef}
+                  type="button"
+                  onClick={() => setShowCountryCodeDropdown(!showCountryCodeDropdown)}
+                  className="flex items-center gap-2 p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
+                >
+                  <span className="text-base">{selectedCountryCode.flag}</span>
+                  <span className="font-mono">{selectedCountryCode.code}</span>
+                  <span className="text-gray-400">▼</span>
+                </button>
+                
+                <div
+                  ref={countryCodeDropdownRef}
+                  className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showCountryCodeDropdown ? 'block' : 'hidden'} min-w-[300px]`}
+                >
+                  <div className="p-2">
+                    <input
+                      type="text"
+                      placeholder="Search country..."
+                      className="w-full p-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400"
+                      onChange={(e) => handleCountryCodeSearch(e.target.value)}
+                    />
+                  </div>
+                  {filteredCountryCodeList.map((country, index) => {
+                    const config = countryData[country as keyof typeof countryData] as CountryConfig
+                    return (
+                      <div
+                        key={country}
+                        className={`p-3 cursor-pointer transition-colors duration-200 text-sm hover:bg-yellow-400/10 hover:text-yellow-400 flex items-center gap-3 ${index === highlightedCountryCodeIndex ? 'bg-yellow-400/10 text-yellow-400' : 'text-white'}`}
+                        onClick={() => selectCountryCode(country)}
+                      >
+                        <span className="text-base">{config.flag}</span>
+                        <span className="font-mono text-gray-300">{config.code}</span>
+                        <span className="flex-1 truncate">{country}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+              
+              <input
+                ref={contactInputRef}
+                id="contact"
+                type="tel"
+                name="contact"
+                value={contact}
+                onChange={handleContactInputChange}
+                placeholder="Enter your phone number"
+                className="flex-1 p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+                required
+              />
+            </div>
+            <small className="block text-xs text-gray-400 mt-1 italic">
+              Select your country code and enter your phone number
+            </small>
             {validationErrors.contact && (
-              <div className="validation-message">{validationErrors.contact}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.contact}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label" htmlFor="country">Country*</label>
-            <div className="country-dropdown-container">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
+              Country*
+            </label>
+            <div className="relative">
               <input
                 ref={countryInputRef}
                 id="country"
                 type="text"
                 name="country"
-                className="form-input w-full"
+                className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
                 value={formData.country}
                 onChange={handleCountryInputChange}
                 onFocus={handleCountryInputFocus}
@@ -468,14 +587,14 @@ export default function AlumniForm() {
               />
               <div
                 ref={dropdownRef}
-                className={`country-dropdown ${showDropdown ? 'show' : ''}`}
+                className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showDropdown ? 'block' : 'hidden'}`}
               >
                 {filteredCountries.map((country, index) => {
                   const config = countryData[country as keyof typeof countryData] as CountryConfig
                   return (
                     <div
                       key={country}
-                      className={`country-option ${index === highlightedIndex ? 'highlighted' : ''}`}
+                      className={`p-3 cursor-pointer transition-colors duration-200 text-sm hover:bg-yellow-400/10 hover:text-yellow-400 ${index === highlightedIndex ? 'bg-yellow-400/10 text-yellow-400' : 'text-white'}`}
                       onClick={() => selectCountry(country)}
                     >
                       {config.flag} {country}
@@ -485,14 +604,16 @@ export default function AlumniForm() {
               </div>
             </div>
             {validationErrors.country && (
-              <div className="validation-message">{validationErrors.country}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.country}
+              </div>
             )}
-          </fieldset>
+          </div>
 
-          <fieldset className="border-none mb-6">
-            <label className="form-label">Academic Stream*</label>
-            <div className="radio-group">
-              <div className="radio-option">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>
+            <div className="flex flex-row gap-5 my-3 items-center">
+              <div className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="stream"
@@ -500,10 +621,11 @@ export default function AlumniForm() {
                   id="stream-physical"
                   checked={formData.stream === 'Physical Science'}
                   onChange={handleRadioChange}
+                  className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                 />
-                <label htmlFor="stream-physical">Physical Science</label>
+                <label htmlFor="stream-physical" className="text-gray-200 cursor-pointer">Physical Science</label>
               </div>
-              <div className="radio-option">
+              <div className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="stream"
@@ -511,17 +633,20 @@ export default function AlumniForm() {
                   id="stream-bio"
                   checked={formData.stream === 'Bio Science'}
                   onChange={handleRadioChange}
+                  className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                 />
-                <label htmlFor="stream-bio">Bio Science</label>
+                <label htmlFor="stream-bio" className="text-gray-200 cursor-pointer">Bio Science</label>
               </div>
             </div>
             {validationErrors.stream && (
-              <div className="validation-message">{validationErrors.stream}</div>
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.stream}
+              </div>
             )}
-          </fieldset>
+          </div>
 
           <button
-            className="submit-btn"
+            className="w-full p-5 bg-gradient-to-r from-purple-600 to-purple-500 text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl hover:from-purple-700 hover:to-purple-600 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             type="submit"
             disabled={isSubmitting}
           >
@@ -529,10 +654,15 @@ export default function AlumniForm() {
           </button>
         </form>
 
-        <div className="buy-section">
-          <p className="buy-section-title">Ready to Join the Celebration?</p>
-          <a href={ticketUrl} className="buy-btn" target="_blank" rel="noopener noreferrer">
-            <span className="buy-btn-icon">🎫</span>
+        <div className="mt-8 text-center p-6 bg-white/2 rounded-2xl border border-white/5 mx-8 mb-8">
+          <p className="text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
+          <a 
+            href={ticketUrl} 
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <span className="text-base">🎫</span>
             Purchase Tickets Now
           </a>
         </div>

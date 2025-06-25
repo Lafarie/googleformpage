@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans text-white min-h-screen relative overflow-x-hidden;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+  
+  body::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: url("/bg.png");
+    opacity: 0.3;
+  }
+}

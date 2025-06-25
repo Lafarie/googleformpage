@@ -317,7 +317,7 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <div className="container">
+      <div className="container-alumni">
         <div className="ticket-section show">
           <h1 className="ticket-title">🎉 Registration Complete!</h1>
           <p className="ticket-description">
@@ -338,17 +338,17 @@ export default function AlumniForm() {
   }
 
   return (
-    <div className="container">
+    <div className="container-alumni">
       <div className="form-container">
         <Image src="/banner2.jpg" alt="Alumni Reunion Banner" width={800} height={300} priority />
         
-        <form onSubmit={handleSubmit}>
-          <fieldset className="form-header">
+        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-5 text-alumni-light">
+          <fieldset className="text-center mb-8 border-none">
             <h2 className="form-title">Alumni Registration</h2>
             <p className="form-subtitle">Join us for our 25th Anniversary Reunion celebration</p>
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label" htmlFor="firstName">First Name*</label>
             <input
               id="firstName"
@@ -357,6 +357,7 @@ export default function AlumniForm() {
               value={formData.firstName}
               onChange={handleInputChange}
               placeholder="Enter your first name"
+              className="form-input"
               required
             />
             {validationErrors.firstName && (
@@ -364,7 +365,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label" htmlFor="lastName">Last Name*</label>
             <input
               id="lastName"
@@ -373,6 +374,7 @@ export default function AlumniForm() {
               value={formData.lastName}
               onChange={handleInputChange}
               placeholder="Enter your last name"
+              className="form-input"
               required
             />
             {validationErrors.lastName && (
@@ -380,7 +382,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label">Gender*</label>
             <div className="radio-group">
               <div className="radio-option">
@@ -411,7 +413,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label" htmlFor="email">Email Address*</label>
             <input
               id="email"
@@ -420,6 +422,7 @@ export default function AlumniForm() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Enter your email address"
+              className="form-input"
               required
             />
             {validationErrors.email && (
@@ -427,7 +430,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label" htmlFor="contact">Contact Number*</label>
             <input
               ref={contactInputRef}
@@ -437,6 +440,7 @@ export default function AlumniForm() {
               value={formData.contact}
               onChange={handleContactInputChange}
               placeholder="Enter your contact number (will be formatted with country code)"
+              className="form-input"
               required
             />
             <small className="form-hint">Number will be automatically formatted with your country code when you submit</small>
@@ -445,7 +449,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label" htmlFor="country">Country*</label>
             <div className="country-dropdown-container">
               <input
@@ -453,7 +457,7 @@ export default function AlumniForm() {
                 id="country"
                 type="text"
                 name="country"
-                className="country-input"
+                className="form-input w-full"
                 value={formData.country}
                 onChange={handleCountryInputChange}
                 onFocus={handleCountryInputFocus}
@@ -485,7 +489,7 @@ export default function AlumniForm() {
             )}
           </fieldset>
 
-          <fieldset>
+          <fieldset className="border-none mb-6">
             <label className="form-label">Academic Stream*</label>
             <div className="radio-group">
               <div className="radio-option">

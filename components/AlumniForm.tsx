@@ -418,7 +418,6 @@ export default function AlumniForm() {
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <span className="text-base">🎫</span>
             Purchase Your Tickets Now
           </a>
           <br />

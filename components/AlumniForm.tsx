@@ -47,7 +47,7 @@ export default function AlumniForm() {
   const [highlightedCountryCodeIndex, setHighlightedCountryCodeIndex] = useState(-1)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitButtonText, setSubmitButtonText] = useState('Register for Alumni Reunion')
+  const [submitButtonText, setSubmitButtonText] = useState('Register')
   const [submittedData, setSubmittedData] = useState<FormData | null>(null)
   const [contact, setContact] = useState('')
   const [selectedCountryCode, setSelectedCountryCode] = useState<{code: string, flag: string, country: string}>({
@@ -366,7 +366,7 @@ export default function AlumniForm() {
         console.log('Form submitted (CORS expected)')
       }
       
-      setSubmitButtonText('✅ Registration Completed!')
+      setSubmitButtonText('Registration Completed!')
       
       setTimeout(() => {
         setShowTicketSection(true)
@@ -374,9 +374,9 @@ export default function AlumniForm() {
       
     } catch (error) {
       console.error('Submission error:', error)
-      setSubmitButtonText('❌ Submission Failed')
+      setSubmitButtonText('Submission Failed')
       setTimeout(() => {
-        setSubmitButtonText('Register for Alumni Reunion')
+        setSubmitButtonText('Register')
         setIsSubmitting(false)
       }, 2000)
     }
@@ -384,7 +384,7 @@ export default function AlumniForm() {
 
   const handleBackToForm = () => {
     setShowTicketSection(false)
-    setSubmitButtonText('Register for Alumni Reunion')
+    setSubmitButtonText('Register')
     setIsSubmitting(false)
   }
 
@@ -434,7 +434,7 @@ export default function AlumniForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-5 relative z-10">
+    <div className="max-w-5xl mx-auto p-5 relative z-10">
       <div className="bg-black/70 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/10">
         <Image 
           src="/banner2.jpg" 
@@ -442,7 +442,7 @@ export default function AlumniForm() {
           width={800} 
           height={300} 
           priority 
-          className="w-full rounded-t-3xl mb-8 shadow-lg"
+          className="w-full rounded-t-3xl mb-1 shadow-lg"
         />
         
         <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-0">
@@ -455,7 +455,7 @@ export default function AlumniForm() {
             </p>
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="firstName">
               First Name*
             </label>
@@ -466,7 +466,7 @@ export default function AlumniForm() {
               value={formData.firstName}
               onChange={handleInputChange}
               placeholder="Enter your first name"
-              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+              className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.firstName && (
@@ -476,7 +476,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="lastName">
               Last Name*
             </label>
@@ -487,7 +487,7 @@ export default function AlumniForm() {
               value={formData.lastName}
               onChange={handleInputChange}
               placeholder="Enter your last name"
-              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+              className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.lastName && (
@@ -497,7 +497,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Gender*</label>
             <div className="flex flex-row gap-5 my-3 items-center">
               <div className="flex items-center gap-2">
@@ -532,7 +532,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
               Email Address*
             </label>
@@ -543,7 +543,7 @@ export default function AlumniForm() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Enter your email address"
-              className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+              className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
               required
             />
             {validationErrors.email && (
@@ -553,7 +553,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
               Where you from? Country*
             </label>
@@ -563,7 +563,7 @@ export default function AlumniForm() {
                 id="country"
                 type="text"
                 name="country"
-                className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+                className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
                 value={formData.country}
                 onChange={handleCountryInputChange}
                 onFocus={handleCountryInputFocus}
@@ -597,7 +597,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
               Contact Number*
             </label>
@@ -607,7 +607,7 @@ export default function AlumniForm() {
                   ref={countryCodeButtonRef}
                   type="button"
                   onClick={() => setShowCountryCodeDropdown(!showCountryCodeDropdown)}
-                  className="flex items-center gap-2 p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
+                  className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus:border-yellow-400 min-w-[120px]"
                 >
                   <span className="text-base">{selectedCountryCode.flag}</span>
                   <span className="font-mono">{selectedCountryCode.code}</span>
@@ -651,7 +651,8 @@ export default function AlumniForm() {
                 value={contact}
                 onChange={handleContactInputChange}
                 placeholder="Enter your phone number"
-                className="flex-1 p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+                className="flex-1 p-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08] appearance-none"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                 required
               />
             </div>
@@ -667,7 +668,7 @@ export default function AlumniForm() {
 
           
 
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>
             <div className="flex flex-row gap-5 my-3 items-center">
               <div className="flex items-center gap-2">
@@ -679,6 +680,7 @@ export default function AlumniForm() {
                   checked={formData.stream === 'Physical Science'}
                   onChange={handleRadioChange}
                   className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
+                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                 />
                 <label htmlFor="stream-physical" className="text-gray-200 cursor-pointer">Physical Science</label>
               </div>
@@ -691,6 +693,7 @@ export default function AlumniForm() {
                   checked={formData.stream === 'Bio Science'}
                   onChange={handleRadioChange}
                   className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
+                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                 />
                 <label htmlFor="stream-bio" className="text-gray-200 cursor-pointer">Bio Science</label>
               </div>
@@ -703,7 +706,7 @@ export default function AlumniForm() {
           </div>
 
           <button
-            className="w-full p-5 bg-gradient-to-r from-purple-600 to-purple-500 text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl hover:from-purple-700 hover:to-purple-600 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full p-3 bg-[#534088] bg-gradient-to-r from-[#34088] to-purple-500 text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 mt-3 shadow-lg hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             type="submit"
             disabled={isSubmitting}
           >
@@ -711,15 +714,16 @@ export default function AlumniForm() {
           </button>
         </form>
 
-        <div className="mt-8 text-center p-6 bg-white/2 rounded-2xl border border-white/5 mx-8 mb-8">
+        <hr className="mx-5" />
+
+        <div className="mt-4 text-center p-1 rounded-2xl mx-8 mb-8">
           <p className="text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</p>
           <a 
             href={getTicketUrl()} 
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
+            className="flex items-center font-bold justify-center w-full gap-3 px-8 py-4 bg-gray-600/80 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <span className="text-base">🎫</span>
             Purchase Tickets Now
           </a>
         </div>

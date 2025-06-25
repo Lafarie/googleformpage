@@ -11,7 +11,7 @@
   body::before {
     content: "";
     @apply absolute inset-0 pointer-events-none;
-    background: url("/bg.png");
-    opacity: 0.3;
+    background: url("/bg2.png") center/cover no-repeat;
+    opacity: 1;
   }
 }

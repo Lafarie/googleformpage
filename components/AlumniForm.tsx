@@ -54,6 +54,7 @@ export default function AlumniForm() {
     flag: '🇱🇰',
     country: 'Sri Lanka'
   })
+  const [allowCountrySync, setAllowCountrySync] = useState(true)
 
   const countryInputRef = useRef<HTMLInputElement>(null)
   const contactInputRef = useRef<HTMLInputElement>(null)
@@ -122,6 +123,9 @@ export default function AlumniForm() {
     setHighlightedIndex(-1)
     setShowDropdown(true)
     
+    // Re-enable sync when user types in country field
+    setAllowCountrySync(true)
+    
     if (validationErrors.country) {
       setValidationErrors(prev => ({ ...prev, country: '' }))
     }
@@ -154,6 +158,25 @@ export default function AlumniForm() {
     setFormData(prev => ({ ...prev, country }))
     setShowDropdown(false)
     setHighlightedIndex(-1)
+    
+    // Auto-update the contact country code to match the selected country
+    const config = countryData[country as keyof typeof countryData] as CountryConfig
+    if (config) {
+      setSelectedCountryCode({
+        code: config.code,
+        flag: config.flag,
+        country: country
+      })
+      
+      // Re-format the existing contact number with the new country code
+      if (contact) {
+        const fullNumber = config.code + contact
+        setFormData(prev => ({ ...prev, contact: fullNumber }))
+      }
+      
+      // Re-enable sync since user selected from country field
+      setAllowCountrySync(true)
+    }
   }
 
   const handleCountryCodeSearch = (searchTerm: string) => {
@@ -174,6 +197,19 @@ export default function AlumniForm() {
     })
     setShowCountryCodeDropdown(false)
     setHighlightedCountryCodeIndex(-1)
+    
+    // Only auto-update the country field on initial selections or when sync is allowed
+    if (allowCountrySync) {
+      setFormData(prev => ({ ...prev, country }))
+      // After first manual country code change, disable auto-sync from contact to country
+      setAllowCountrySync(false)
+    }
+    
+    // Re-format the existing contact number with the new country code
+    if (contact) {
+      const fullNumber = config.code + contact
+      setFormData(prev => ({ ...prev, contact: fullNumber }))
+    }
   }
 
   const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -296,6 +332,7 @@ export default function AlumniForm() {
     try {
       setSubmitButtonText('🚀 Submitting Registration...')
       setSubmittedData(formData)
+      formatContactNumber(selectedCountryCode.country, contact, true)
       
       const formDataToSubmit = new FormData()
       formDataToSubmit.append('entry.344858218', formData.firstName)
@@ -499,6 +536,50 @@ export default function AlumniForm() {
           </div>
 
           <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
+              Where you from? Country*
+            </label>
+            <div className="relative">
+              <input
+                ref={countryInputRef}
+                id="country"
+                type="text"
+                name="country"
+                className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
+                value={formData.country}
+                onChange={handleCountryInputChange}
+                onFocus={handleCountryInputFocus}
+                onKeyDown={handleCountryKeyDown}
+                placeholder="Enter your country"
+                autoComplete="off"
+                required
+              />
+              <div
+                ref={dropdownRef}
+                className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showDropdown ? 'block' : 'hidden'}`}
+              >
+                {filteredCountries.map((country, index) => {
+                  const config = countryData[country as keyof typeof countryData] as CountryConfig
+                  return (
+                    <div
+                      key={country}
+                      className={`p-3 cursor-pointer transition-colors duration-200 text-sm hover:bg-yellow-400/10 hover:text-yellow-400 ${index === highlightedIndex ? 'bg-yellow-400/10 text-yellow-400' : 'text-white'}`}
+                      onClick={() => selectCountry(country)}
+                    >
+                      {config.flag} {country}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            {validationErrors.country && (
+              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
+                {validationErrors.country}
+              </div>
+            )}
+          </div>
+
+          <div className="mb-6">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="contact">
               Contact Number*
             </label>
@@ -566,49 +647,7 @@ export default function AlumniForm() {
             )}
           </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="country">
-              Country*
-            </label>
-            <div className="relative">
-              <input
-                ref={countryInputRef}
-                id="country"
-                type="text"
-                name="country"
-                className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white text-sm transition-all duration-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:shadow-[0_0_0_3px_rgba(255,215,0,0.1)] focus:bg-white/[0.08]"
-                value={formData.country}
-                onChange={handleCountryInputChange}
-                onFocus={handleCountryInputFocus}
-                onKeyDown={handleCountryKeyDown}
-                placeholder="Enter your country"
-                autoComplete="off"
-                required
-              />
-              <div
-                ref={dropdownRef}
-                className={`absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border border-white/10 rounded-xl max-h-52 overflow-y-auto z-50 mt-1 ${showDropdown ? 'block' : 'hidden'}`}
-              >
-                {filteredCountries.map((country, index) => {
-                  const config = countryData[country as keyof typeof countryData] as CountryConfig
-                  return (
-                    <div
-                      key={country}
-                      className={`p-3 cursor-pointer transition-colors duration-200 text-sm hover:bg-yellow-400/10 hover:text-yellow-400 ${index === highlightedIndex ? 'bg-yellow-400/10 text-yellow-400' : 'text-white'}`}
-                      onClick={() => selectCountry(country)}
-                    >
-                      {config.flag} {country}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-            {validationErrors.country && (
-              <div className="text-red-400 text-xs mt-1 p-2 bg-red-400/10 rounded-md border border-red-400/30">
-                {validationErrors.country}
-              </div>
-            )}
-          </div>
+          
 
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream*</label>

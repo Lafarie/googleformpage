@@ -56,7 +56,8 @@
           <!-- Field type: "short" id: "775017245" -->
           <fieldset>
             <label class="form-label" for="36020433">Contact Number*</label>
-            <input id="36020433" type="tel" name="entry.36020433" placeholder="Enter your contact number" required>
+            <input id="36020433" type="tel" name="entry.36020433" placeholder="Enter your contact number (will be formatted with country code)" required>
+            <small class="form-hint">Number will be automatically formatted with your country code when you submit</small>
           </fieldset>
 
           <!-- Field type: "short" id: "1281073730" -->
@@ -95,7 +96,7 @@
           -->
           <input type="hidden" name="pageHistory" value="0">
 
-          <input class="submit-btn" type="submit" value="🎓 Register for Alumni Reunion">
+          <input class="submit-btn" type="submit" value="Register for Alumni Reunion">
         </form>
 
         <div class="buy-section">
@@ -118,7 +119,7 @@
           <span class="buy-btn-icon">🎫</span>
           Purchase Your Tickets Now
         </a>
-
+<br>
         <a href="#" class="back-link" onclick="showForm(); return false;"> ← Back to Registration Form </a>
       </div>
     </div>
@@ -259,10 +260,7 @@
           countryDropdown.classList.remove("show");
           highlightedIndex = -1;
           
-          // Format contact number based on selected country
-          // if (window.formatContactNumber) {
-          //  window.formatContactNumber(countryName);
-          // }
+        
           
           // Trigger validation
           validateForm();
@@ -568,12 +566,12 @@
           this.value = value;
         });
 
-        // Format contact number function (silent formatting)
-        window.formatContactNumber = function(countryName) {
+        // Format contact number function (with visual feedback for submission)
+        window.formatContactNumber = function(countryName, showVisualFeedback = false) {
           const contactInput = document.getElementById("36020433");
           let contactValue = contactInput.value.trim();
           
-          if (!contactValue) return;
+          if (!contactValue) return false;
           
           const countryConfig = countryCodeMap[countryName];
           
@@ -589,16 +587,45 @@
             // Remove any non-numeric characters
             contactValue = contactValue.replace(/\D/g, "");
             
-            // Format with country code (silent formatting)
+            // Format with country code if length is valid
             if (contactValue.length >= countryConfig.minLength && contactValue.length <= countryConfig.maxLength) {
-              contactInput.value = countryConfig.code + contactValue;
+              const formattedNumber = countryConfig.code + contactValue;
+              contactInput.value = formattedNumber;
+              
+              // Show visual feedback if requested (during submission)
+              if (showVisualFeedback) {
+                // Add animation class
+                contactInput.classList.add("formatting");
+                
+                contactInput.style.transition = "all 0.3s ease";
+                contactInput.style.backgroundColor = "#10b981";
+                contactInput.style.color = "#ffffff";
+                contactInput.style.borderColor = "#10b981";
+                
+                console.log(`✅ Contact number formatted: ${contactValue} → ${formattedNumber} (${countryName})`);
+                
+                // Reset styling after showing the change
+                setTimeout(() => {
+                  contactInput.style.backgroundColor = "";
+                  contactInput.style.color = "";
+                  contactInput.style.borderColor = "";
+                  contactInput.classList.remove("formatting");
+                }, 1500);
+              }
+              
+              return true;
+            } else {
+              console.log(`❌ Invalid contact number length for ${countryName}: ${contactValue} (${contactValue.length} digits, expected ${countryConfig.minLength}-${countryConfig.maxLength})`);
+              return false;
             }
           } else {
             // For countries not in the map, just clean the number
             contactValue = contactValue.replace(/\D/g, "");
             if (contactValue.length > 0) {
               contactInput.value = contactValue;
+              console.log(`⚠️ Country not found in config: ${countryName}, cleaned number: ${contactValue}`);
             }
+            return contactValue.length > 0;
           }
         };
 
@@ -703,55 +730,91 @@
           return false;
         }
 
-        // Format contact number with country code before submission
         const countryInput = document.getElementById("962797291");
         const contactInput = document.getElementById("36020433");
         const selectedCountry = countryInput.value.trim();
+        const submitBtn = document.querySelector('input[type="submit"]');
+        const originalSubmitText = submitBtn.value;
         
-        if (selectedCountry && window.formatContactNumber) {
-          window.formatContactNumber(selectedCountry);
-        }
-
-        // Store complete form data before submission (including gender and stream)
-        const genderElements = document.getElementsByName("entry.1816651679");
-        let gender = "";
-        for (let i = 0; i < genderElements.length; i++) {
-          if (genderElements[i].checked) {
-            gender = genderElements[i].value;
-            break;
+        // Step 1: Format contact number with visual feedback
+        if (selectedCountry && contactInput.value.trim() && window.formatContactNumber) {
+          // Update submit button to show formatting is happening
+          submitBtn.value = "📱 Formatting Contact Number...";
+          submitBtn.disabled = true;
+          
+          // Format the number with visual feedback
+          const formatSuccess = window.formatContactNumber(selectedCountry, true);
+          
+          if (formatSuccess) {
+            // Wait for user to see the formatted number, then proceed
+            setTimeout(() => {
+              submitBtn.value = "🚀 Submitting Registration...";
+              proceedWithSubmission();
+            }, 1800); // Wait 1.8 seconds to show the formatted number
+          } else {
+            // Formatting failed, show error and reset
+            submitBtn.value = "❌ Invalid Contact Number";
+            setTimeout(() => {
+              submitBtn.value = originalSubmitText;
+              submitBtn.disabled = false;
+              contactInput.focus();
+            }, 2000);
+            return false;
           }
+        } else {
+          // No formatting needed, submit immediately
+          proceedWithSubmission();
         }
 
-        const streamElements = document.getElementsByName("entry.1045473638");
-        let stream = "";
-        for (let i = 0; i < streamElements.length; i++) {
-          if (streamElements[i].checked) {
-            stream = streamElements[i].value;
-            break;
+        function proceedWithSubmission() {
+          // Store complete form data before submission (including gender and stream)
+          const genderElements = document.getElementsByName("entry.1816651679");
+          let gender = "";
+          for (let i = 0; i < genderElements.length; i++) {
+            if (genderElements[i].checked) {
+              gender = genderElements[i].value;
+              break;
+            }
           }
+
+          const streamElements = document.getElementsByName("entry.1045473638");
+          let stream = "";
+          for (let i = 0; i < streamElements.length; i++) {
+            if (streamElements[i].checked) {
+              stream = streamElements[i].value;
+              break;
+            }
+          }
+
+          submittedFormData = {
+            firstName: document.getElementById("344858218").value.trim(),
+            lastName: document.getElementById("491468228").value.trim(),
+            email: document.getElementById("853228319").value.trim(),
+            contact: document.getElementById("36020433").value.trim(),
+            country: document.getElementById("962797291").value.trim(),
+            gender: gender,
+            stream: stream
+          };
+
+          console.log("Submitting form with data:", submittedFormData);
+
+          var extraData = {};
+
+          $("#bootstrapForm").ajaxSubmit({
+            data: extraData,
+            dataType: "jsonp",
+            error: function () {
+              // Show success message on submit button
+              submitBtn.value = "✅ Registration Completed!";
+              
+              setTimeout(() => {
+                // Reset form and redirect to ticket section
+                $("#bootstrapForm")[0].reset();
+                showTicket();
+              }, 1000);
+            },
+          });
         }
-
-        submittedFormData = {
-          firstName: document.getElementById("344858218").value.trim(),
-          lastName: document.getElementById("491468228").value.trim(),
-          email: document.getElementById("853228319").value.trim(),
-          contact: document.getElementById("36020433").value.trim(),
-          country: document.getElementById("962797291").value.trim(),
-          gender: gender,
-          stream: stream
-        };
-
-        var extraData = {};
-
-        $("#bootstrapForm").ajaxSubmit({
-          data: extraData,
-          dataType: "jsonp",
-          error: function () {
-            // Reset form and redirect directly to ticket section without success message
-            $("#bootstrapForm")[0].reset();
-            showTicket();
-          },
-        });
       });
     </script>
   </body>

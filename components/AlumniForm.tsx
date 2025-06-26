@@ -273,6 +273,28 @@ export default function AlumniForm() {
     return false
   }
 
+    const scrollToFirstError = (errors: ValidationErrors) => {
+    const fieldOrder = ['firstName', 'lastName', 'gender', 'email', 'country', 'contact', 'stream']
+    
+    for (const field of fieldOrder) {
+      if (errors[field]) {
+        const element = document.getElementById(field)
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+          })
+          // Add a slight delay then focus the element for better UX
+          setTimeout(() => {
+            element.focus()
+          }, 300)
+          break
+        }
+      }
+    }
+  }
+
   const validateForm = (): boolean => {
     const errors: ValidationErrors = {}
     
@@ -301,7 +323,7 @@ export default function AlumniForm() {
         if (cleanedContact.startsWith(countryConfig.code.replace('+', ''))) {
           cleanedContact = cleanedContact.substring(countryConfig.code.replace('+', '').length)
         }
-
+        
         // Remove removePrefix if it exists
         if (countryConfig && countryConfig.removePrefix && cleanedContact.startsWith(countryConfig.removePrefix)) {
           cleanedContact = cleanedContact.substring(countryConfig.removePrefix.length)
@@ -328,6 +350,12 @@ export default function AlumniForm() {
     }
     
     setValidationErrors(errors)
+    
+    // Auto-scroll to first error if validation fails
+    if (Object.keys(errors).length > 0) {
+      scrollToFirstError(errors)
+    }
+    
     return Object.keys(errors).length === 0
   }
 
@@ -531,7 +559,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Gender <span className="text-red-500">*</span></label>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
+            <div id="gender" className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -705,7 +733,7 @@ export default function AlumniForm() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2">Academic Stream <span className="text-red-500">*</span></label>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
+            <div id="stream" className="flex flex-col sm:flex-row gap-3 sm:gap-5 my-3">
               <div className="flex items-center gap-2">
                 <input
                   type="radio"

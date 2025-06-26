@@ -58,7 +58,7 @@ export default function AlumniForm() {
     flag: '🇱🇰',
     country: 'Sri Lanka'
   })
-  const [allowCountrySync, setAllowCountrySync] = useState(true)
+  const [allowCountrySync, setAllowCountrySync] = useState(false)
 
   const countryInputRef = useRef<HTMLInputElement>(null)
   const contactInputRef = useRef<HTMLInputElement>(null)
@@ -181,6 +181,7 @@ export default function AlumniForm() {
   }
 
   const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
     const value = e.target.value
     setFormData(prev => ({ ...prev, country: value }))
     
@@ -263,22 +264,11 @@ export default function AlumniForm() {
       flag: config.flag,
       country: country
     })
-    setAllowCountrySync(false)
     setShowCountryCodeDropdown(false)
     setHighlightedCountryCodeIndex(-1)
     
-    // Only auto-update the country field on initial selections or when sync is allowed
-    if (allowCountrySync) {
-      setFormData(prev => ({ ...prev, country }))
-      // After first manual country code change, disable auto-sync from contact to country
-      setAllowCountrySync(false)
-    }
-    
-    // Re-format the existing contact number with the new country code
-    // if (contact) {
-    //   const fullNumber = config.code + contact
-    //   setFormData(prev => ({ ...prev, contact: fullNumber }))
-    // }
+    // Don't automatically update the country field when country code is changed
+    // This prevents the country from changing when user selects a different country code
   }
 
   const handleContactInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -455,7 +455,7 @@ export default function AlumniForm() {
 
   if (showTicketSection) {
     return (
-      <main className="max-w-2xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
+      <main className="max-w-4xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
         <section className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10" role="main" aria-label="Registration Confirmation">
           <header>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent">
@@ -488,7 +488,7 @@ export default function AlumniForm() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-3 sm:p-5 relative z-10">
+    <main className="max-w-4xl mx-auto p-3 sm:p-5 relative z-10">
       <article className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
         <header>
           <Image 

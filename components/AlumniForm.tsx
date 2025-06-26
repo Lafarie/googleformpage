@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import countryData from '@/data/country.json'
-import { tree } from 'next/dist/build/templates/app-page'
+import { useSearchParams } from 'next/navigation'
+
 
 interface CountryConfig {
   code: string
@@ -38,6 +39,8 @@ export default function AlumniForm() {
     stream: ''
   })
 
+  const searchParams = useSearchParams()
+  const data = searchParams.get('data')
   const [showTicketSection, setShowTicketSection] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false)
@@ -64,6 +67,13 @@ export default function AlumniForm() {
   const countryCodeButtonRef = useRef<HTMLButtonElement>(null)
 
   const countries = Object.keys(countryData)
+
+
+  useEffect(() => {
+    if (data) {
+      setFormData(JSON.parse(atob(data)))
+    }
+  }, [data])
 
   useEffect(() => {
     setFilteredCountries(countries)
@@ -420,7 +430,7 @@ export default function AlumniForm() {
       setSubmitButtonText('Registration Completed!')
       
       setTimeout(() => {
-        setShowTicketSection(true)
+        window.location.href = `/registration-complete?data=${getTicketUrl()}`
       }, 1000)
       
     } catch (error) {
@@ -431,12 +441,6 @@ export default function AlumniForm() {
         setIsSubmitting(false)
       }, 2000)
     }
-  }
-
-  const handleBackToForm = () => {
-    setShowTicketSection(false)
-    setSubmitButtonText('Register')
-    setIsSubmitting(false)
   }
 
   // Generate ticket URL - use a fallback URL to prevent hydration issues
@@ -451,40 +455,6 @@ export default function AlumniForm() {
     }
     // return "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
     return "https://appigo-mall.hsenidmobile.com/JPNENT/products/entry-pass"
-  }
-
-  if (showTicketSection) {
-    return (
-      <main className="max-w-4xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
-        <section className="text-center bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10" role="main" aria-label="Registration Confirmation">
-          <header>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[#B98C53] to-yellow-200 bg-clip-text text-transparent">
-              Registration Complete!
-            </h1>
-            <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 leading-relaxed px-2">
-              Thank you for registering for our 25th Anniversary Reunion! Complete your purchase to secure your spot at this memorable celebration.
-            </p>
-          </header>
-
-          <a 
-            href={getTicketUrl()} 
-            className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#534088] text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="Purchase tickets for University of Colombo Alumni 25th Anniversary Reunion (opens in new tab)"
-          >
-            Purchase Your Tickets Now
-          </a>
-          {/* <br />
-          <button 
-            className="inline-block mt-4 sm:mt-5 text-gray-400 text-sm transition-colors duration-300 cursor-pointer hover:text-yellow-400 bg-transparent border-none"
-            onClick={handleBackToForm}
-          >
-            ← Back to Registration Form
-          </button> */}
-        </section>
-      </main>
-    )
   }
 
   return (
@@ -591,7 +561,6 @@ export default function AlumniForm() {
               </div>
             )}
           </div>
-
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
               Email Address <span className="text-red-500">*</span>

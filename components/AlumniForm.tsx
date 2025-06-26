@@ -71,7 +71,64 @@ export default function AlumniForm() {
 
   useEffect(() => {
     if (data) {
-      setFormData(JSON.parse(atob(data)))
+      try {
+        let parsedData = null
+        
+        // Check if data is a URL (contains the ticket purchase URL)
+        if (data.startsWith('http')) {
+          // Extract the encoded data from the URL
+          const url = new URL(data)
+          const encodedData = url.searchParams.get('data')
+          if (encodedData) {
+            const decodedData = decodeURIComponent(encodedData)
+            parsedData = JSON.parse(atob(decodedData))
+          }
+        } else {
+          // Data is already base64 encoded form data
+          const decodedData = decodeURIComponent(data)
+          parsedData = JSON.parse(atob(decodedData))
+        }
+        
+        if (parsedData) {
+          // Handle contact number - extract country code and local number
+          if (parsedData.contact) {
+            const fullContact = parsedData.contact
+            let localNumber = fullContact
+            let countryCodeInfo = selectedCountryCode
+            
+            // Find matching country code and extract local number
+            for (const [countryName, config] of Object.entries(countryData)) {
+              const countryConfig = config as CountryConfig
+              if (fullContact.startsWith(countryConfig.code)) {
+                localNumber = fullContact.substring(countryConfig.code.length)
+                
+                // Remove removePrefix if it exists
+                if (countryConfig.removePrefix && localNumber.startsWith(countryConfig.removePrefix)) {
+                  localNumber = localNumber.substring(countryConfig.removePrefix.length)
+                }
+                
+                countryCodeInfo = {
+                  code: countryConfig.code,
+                  flag: countryConfig.flag,
+                  country: countryName
+                }
+                break
+              }
+            }
+            
+            setSelectedCountryCode(countryCodeInfo)
+            setContact(localNumber)
+            
+            // Update form data with the original full contact for submission
+            setFormData({ ...parsedData, contact: fullContact })
+          } else {
+            setFormData(parsedData)
+          }
+        }
+      } catch (error) {
+        console.error('Error decoding form data:', error)
+        // If decoding fails, just ignore and use default form state
+      }
     }
   }, [data])
 

@@ -289,8 +289,30 @@ export default function AlumniForm() {
       errors.email = 'Please enter a valid email address'
     }
     
-    if (!contact.trim() || contact.trim().length < 8) {
-      errors.contact = 'Please enter a valid contact number (at least 8 digits)'
+    // Validate contact number with country-specific min/max length
+    if (!contact.trim()) {
+      errors.contact = 'Please enter a valid contact number'
+    } else {
+      const countryConfig = countryData[selectedCountryCode.country as keyof typeof countryData] as CountryConfig
+      if (countryConfig) {
+        let cleanedContact = contact.replace(/\D/g, '') // Remove non-digits for length check
+        
+        // Remove the country code prefix for length validation
+        if (cleanedContact.startsWith(countryConfig.code.replace('+', ''))) {
+          cleanedContact = cleanedContact.substring(countryConfig.code.replace('+', '').length)
+        }
+
+        // Remove removePrefix if it exists
+        if (countryConfig && countryConfig.removePrefix && cleanedContact.startsWith(countryConfig.removePrefix)) {
+          cleanedContact = cleanedContact.substring(countryConfig.removePrefix.length)
+        }
+        
+        if (cleanedContact.length < countryConfig.minLength || cleanedContact.length > countryConfig.maxLength) {
+          errors.contact = `Please enter a valid ${selectedCountryCode.country} contact number (${countryConfig.minLength == countryConfig.maxLength?countryConfig.minLength:countryConfig.minLength + '-' + countryConfig.maxLength} digits)`
+        }
+      } else {
+        errors.contact = 'Please enter a valid contact number (at least 8 digits)'
+      }
     }
     
     if (!formData.country.trim()) {
@@ -733,7 +755,7 @@ export default function AlumniForm() {
           <h2 className="text-sm sm:text-base font-medium text-gray-200 mb-4">Ready to Join the Celebration?</h2>
           <a 
             href={getTicketUrl()} 
-            className="flex items-center bg-[#534088] font-bold justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 text-white no-underline rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" 
+            className="flex items-center bg-[#534088] justify-center w-full gap-3 px-6 sm:px-8 py-3 sm:py-4 text-white no-underline rounded-xl text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="Purchase tickets for Alumni 25th Anniversary Reunion (opens in new tab)"

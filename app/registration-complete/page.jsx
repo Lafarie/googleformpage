@@ -1,8 +1,9 @@
 'use client'
 
 import { useSearchParams, useRouter } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function RegistrationComplete() {
+function RegistrationCompleteContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const data = searchParams.get('data')
@@ -59,4 +60,25 @@ export default function RegistrationComplete() {
         </section>
       </main>
   );
+}
+
+function LoadingFallback() {
+  return (
+    <main className="max-w-4xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
+      <section className="bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10 relative">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-gray-300">Loading...</p>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+export default function RegistrationComplete() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <RegistrationCompleteContent />
+    </Suspense>
+  )
 }

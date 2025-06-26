@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import Image from 'next/image'
 import countryData from '@/data/country.json'
 import { useSearchParams } from 'next/navigation'
@@ -28,7 +28,7 @@ interface ValidationErrors {
   [key: string]: string
 }
 
-export default function AlumniForm() {
+function AlumniFormContent() {
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -809,5 +809,26 @@ export default function AlumniForm() {
         </section>
       </article>
     </main>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <main className="max-w-4xl mx-auto p-3 sm:p-5 relative z-10">
+      <article className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
+        <div className="p-4 sm:p-6 md:p-8 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-gray-300">Loading form...</p>
+        </div>
+      </article>
+    </main>
+  )
+}
+
+export default function AlumniForm() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AlumniFormContent />
+    </Suspense>
   )
 } 

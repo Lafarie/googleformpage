@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"   # HTTP
+      - "443:443"  # HTTPS
+    container_name: googleformpage-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - /appigo/ssl:/etc/nginx/ssl:ro
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

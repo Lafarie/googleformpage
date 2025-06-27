@@ -4,14 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"   # HTTP
-      - "443:443"  # HTTPS
+      - "3000:3000"   # Next.js app
     container_name: googleformpage-app
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-    volumes:
-      - /etc/nginx/ssl/:/etc/nginx/ssl:ro
     networks:
       - app-network
 

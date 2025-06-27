@@ -16,20 +16,26 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
+# Build the application (creates static export in 'out' directory)
 RUN npm run build
 
-# Production stage - nginx to serve static files
-FROM nginx:alpine AS runner
-WORKDIR /usr/share/nginx/html
+# Production stage - serve static files
+FROM node:22-alpine AS runner
+WORKDIR /app
 
-# Remove default nginx static assets
-RUN rm -rf ./*
+# Install serve globally to serve static files
+RUN npm install -g serve
 
-# Copy static files from builder stage
-COPY --from=builder /app/out .
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy the static files from builder stage
+COPY --from=builder /app/out ./out
 
-EXPOSE 80 443
+# Create a non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN chown -R nextjs:nodejs /app
+USER nextjs
 
-CMD ["nginx", "-g", "daemon off;"] 
+EXPOSE 3000
+
+# Serve the static files on port 3000
+CMD ["serve", "-s", "out", "-l", "3000"]

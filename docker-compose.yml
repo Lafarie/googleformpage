@@ -11,7 +11,7 @@ services:
     environment:
       - NODE_ENV=production
     volumes:
-      - /appigo/ssl:/etc/nginx/ssl:ro
+      - /etc/nginx/ssl/:/etc/nginx/ssl:ro
     networks:
       - app-network
 

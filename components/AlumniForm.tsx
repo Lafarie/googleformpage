@@ -431,7 +431,7 @@ function AlumniFormContent() {
     const jsonString = JSON.stringify(dataToEncode)
     const encoded = btoa(jsonString)
     // const baseUrl = "https://stgappigo-mall.hsenidmobile.com/UOCALUMNI/products/alumni-tickets"
-    const baseUrl = "https://appigo-mall.hsenidmobile.com/JPNENT/products/entry-pass"
+    const baseUrl = "https://business.appigo.co/CUFCALUMNI/products/alumni-tickets"
     return `${baseUrl}?data=${encodeURIComponent(encoded)}`
   }
 

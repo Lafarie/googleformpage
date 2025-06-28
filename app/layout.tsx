@@ -131,6 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Preload critical resources */}
         <link rel="preload" href="/banner2.jpg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/bg2.png" as="image" type="image/png" />
       </head>
       <body className={inter.className}>{children}</body>
     </html>

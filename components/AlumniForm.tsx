@@ -481,7 +481,19 @@ function AlumniFormContent() {
     <main className="max-w-4xl mx-auto p-3 sm:p-5 relative z-10">
       <article className="bg-black/50 backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10">
         <header>
-          <Image src="/banner2.jpg" alt="University of Colombo Alumni 25th Anniversary Reunion - Registration Banner featuring celebration graphics and event details" width={800} height={300} priority className="w-full rounded-t-2xl sm:rounded-t-3xl mb-1 shadow-lg" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" quality={90} placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" />
+          <Image 
+            src="/banner2.jpg" 
+            alt="University of Colombo Alumni 25th Anniversary Reunion - Registration Banner featuring celebration graphics and event details" 
+            width={800} 
+            height={300} 
+            priority 
+            fetchPriority="high"
+            className="w-full rounded-t-2xl sm:rounded-t-3xl mb-1 shadow-lg" 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+            quality={90} 
+            placeholder="blur" 
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" 
+          />
         </header>
 
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 flex flex-col gap-0" role="form" aria-label="Alumni Registration Form">

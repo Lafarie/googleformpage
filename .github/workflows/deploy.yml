@@ -10,16 +10,50 @@ jobs:
   build:
     runs-on: self-hosted
     # needs: enable-maintenance
-    steps:  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Verify files exist
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        echo "Checking for docker-compose.yml:"
+        ls -la docker-compose.yml || echo "docker-compose.yml not found!"
+        echo "Checking for Dockerfile:"
+        ls -la Dockerfile || echo "Dockerfile not found!"
+        
+    - name: Stop existing containers
+      run: |
+        echo "Stopping any existing containers..."
+        sudo docker-compose down || true
+        sudo docker container prune -f || true
+        
     - name: Deploy with Docker Compose
       run: |
-        cd /googleform-actions-runner/_work/googleformpage/googleformpage
+        echo "Building and starting containers..."
         sudo docker-compose up --build -d
+        sleep 10
         sudo docker-compose ps
+        
+    - name: Verify deployment
+      run: |
+        echo "Checking container status..."
+        sudo docker-compose ps
+        echo "Checking container logs..."
+        sudo docker-compose logs --tail=50
 
-    # - name: Debugging - Get Logs if Failure
-    #   if: failure()
-    #   run: sudo docker-compose logs
+    - name: Debugging - Get Logs if Failure
+      if: failure()
+      run: |
+        echo "=== Docker Compose Status ==="
+        sudo docker-compose ps
+        echo "=== Container Logs ==="
+        sudo docker-compose logs
+        echo "=== Docker System Info ==="
+        sudo docker system df
+        sudo docker images
 
     - name: Clean up
       run: |

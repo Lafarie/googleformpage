@@ -24,11 +24,11 @@ jobs:
         echo "Checking for Dockerfile:"
         ls -la Dockerfile || echo "Dockerfile not found!"
         
-    - name: Stop existing containers
-      run: |
-        echo "Stopping any existing containers..."
-        sudo docker-compose down || true
-        sudo docker container prune -f || true
+    # - name: Stop existing containers
+    #   run: |
+    #     echo "Stopping any existing containers..."
+    #     sudo docker-compose down || true
+    #     sudo docker container prune -f || true
         
     - name: Deploy with Docker Compose
       run: |

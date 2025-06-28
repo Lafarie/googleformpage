@@ -13,7 +13,7 @@ jobs:
     steps:  
     - name: Deploy with Docker Compose
       run: |
-        cd /googleform-actions-runner/_work/GOOGLEFORMPAGE/GOOGLEFORMPAGE
+        cd /googleform-actions-runner/_work/googleformpage/googleformpage
         sudo docker-compose up --build -d
         sudo docker-compose ps
 

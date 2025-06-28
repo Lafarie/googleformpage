@@ -1,16 +1,23 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Suspense } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-function RegistrationCompleteContent() {
-  const searchParams = useSearchParams()
+export default function RegistrationComplete() {
   const router = useRouter()
-  const data = searchParams.get('data')
+  const [data, setData] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Get search params on client side for static export
+    const urlParams = new URLSearchParams(window.location.search)
+    const dataParam = urlParams.get('data')
+    setData(dataParam || '')
+    setIsLoading(false)
+  }, [])
 
   const handleBackToForm = () => {
     try {
-      // Extract the encoded form data from the ticket URL
       if (data && data.startsWith('http')) {
         const url = new URL(data)
         const encodedData = url.searchParams.get('data')
@@ -23,8 +30,20 @@ function RegistrationCompleteContent() {
       console.error('Error extracting form data from URL:', error)
     }
     
-    // Fallback: go back to form without data
     router.push('/')
+  }
+
+  if (isLoading) {
+    return (
+      <main className="max-w-4xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
+        <section className="bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10 relative">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+            <p className="text-gray-300">Loading...</p>
+          </div>
+        </section>
+      </main>
+    )
   }
 
   return (
@@ -60,25 +79,4 @@ function RegistrationCompleteContent() {
         </section>
       </main>
   );
-}
-
-function LoadingFallback() {
-  return (
-    <main className="max-w-4xl mx-auto p-3 sm:p-5 z-10 min-h-screen flex items-center justify-center">
-      <section className="bg-black/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10 relative">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <p className="text-gray-300">Loading...</p>
-        </div>
-      </section>
-    </main>
-  )
-}
-
-export default function RegistrationComplete() {
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <RegistrationCompleteContent />
-    </Suspense>
-  )
 }

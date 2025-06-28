@@ -1,0 +1,27 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    # needs: enable-maintenance
+    steps:  
+    - name: Deploy with Docker Compose
+      run: |
+        cd /googleform-actions-runner/_work/GOOGLEFORMPAGE/GOOGLEFORMPAGE
+        sudo docker-compose up --build -d
+        sudo docker-compose ps
+
+    # - name: Debugging - Get Logs if Failure
+    #   if: failure()
+    #   run: sudo docker-compose logs
+
+    - name: Clean up
+      run: |
+        sudo docker system prune -af --filter "until=16h"
+

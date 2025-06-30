@@ -58,7 +58,7 @@ function AlumniFormContent() {
     country: "Sri Lanka",
   });
   const [allowCountrySync, setAllowCountrySync] = useState(false);
-  const baseUrl = "https://business.appigo.co/CUFCALUMNI/products/alumni-tickets";
+  const baseUrl = "https://business.appigo.co/CUFCALUMNI/products/25th-anniversary-reunion-ticket";
   const countryInputRef = useRef<HTMLInputElement>(null);
   const contactInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);

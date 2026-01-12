@@ -13,6 +13,7 @@ This is a modern Next.js application for alumni registration for a 25th Annivers
 - 🎫 **Ticket Integration** - Direct link to purchase tickets with pre-filled data
 - 📝 **Google Forms Sync** - Seamless data collection integration
 - ⚡ **Optimized Performance** - Purged CSS and Next.js optimizations
+  
 
 ## 🚀 Getting Started
 
